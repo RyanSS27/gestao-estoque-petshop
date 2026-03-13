@@ -1,4 +1,4 @@
-package br.com.fishiaquapets.petshop_api;
+package br.com.fishaquapets.petshop_api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

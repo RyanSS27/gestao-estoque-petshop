@@ -1,4 +1,4 @@
-package br.com.fishiaquapets.petshop_api;
+package br.com.fishaquapets.petshop_api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
