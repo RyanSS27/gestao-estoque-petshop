@@ -1,0 +1,7 @@
+package br.com.fishaquapets.petshop_api.model.enums;
+
+public enum CategoriaServico {
+    LIMPEZA,
+    MANUTENCAO,
+    INSTALACAO
+}
