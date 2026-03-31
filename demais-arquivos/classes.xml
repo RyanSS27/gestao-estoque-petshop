@@ -1,0 +1,71 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Hospital UML">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Person -->
+        <mxCell id="person" value="Person&#xa;------------------&#xa;title: String&#xa;givenName: String&#xa;middleName: String&#xa;familyName: String&#xa;birthDate: Date&#xa;gender: String&#xa;phone: String" style="shape=rectangle" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="220" height="200" as="geometry"/>
+        </mxCell>
+
+        <!-- Patient -->
+        <mxCell id="patient" value="Patient&#xa;------------------&#xa;id: String&#xa;age: int&#xa;sickness: String" style="shape=rectangle" vertex="1" parent="1">
+          <mxGeometry x="40" y="280" width="220" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- Staff -->
+        <mxCell id="staff" value="Staff&#xa;------------------&#xa;joined: Date&#xa;education: List&#xa;languages: List" style="shape=rectangle" vertex="1" parent="1">
+          <mxGeometry x="320" y="280" width="220" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- Hospital -->
+        <mxCell id="hospital" value="Hospital&#xa;------------------&#xa;name: String&#xa;address: String&#xa;phone: String" style="shape=rectangle" vertex="1" parent="1">
+          <mxGeometry x="320" y="40" width="220" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- Department -->
+        <mxCell id="department" value="Department" style="shape=rectangle" vertex="1" parent="1">
+          <mxGeometry x="600" y="200" width="180" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Doctor -->
+        <mxCell id="doctor" value="Doctor" style="shape=rectangle" vertex="1" parent="1">
+          <mxGeometry x="320" y="460" width="140" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Nurse -->
+        <mxCell id="nurse" value="Nurse" style="shape=rectangle" vertex="1" parent="1">
+          <mxGeometry x="480" y="460" width="140" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Relationships -->
+        <mxCell id="e1" style="endArrow=block" edge="1" parent="1" source="patient" target="person">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e2" style="endArrow=block" edge="1" parent="1" source="staff" target="person">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e3" style="endArrow=block" edge="1" parent="1" source="doctor" target="staff">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e4" style="endArrow=block" edge="1" parent="1" source="nurse" target="staff">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e5" style="endArrow=open" edge="1" parent="1" source="hospital" target="department">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e6" style="endArrow=open" edge="1" parent="1" source="department" target="staff">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

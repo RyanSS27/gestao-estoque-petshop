@@ -7,8 +7,4 @@ public abstract class Item {
     protected String nome;
     protected BigDecimal preco;
     protected int quantidade;
-
-    public BigDecimal gerarSubTotal() {
-        return preco.multiply(BigDecimal.valueOf(quantidade));
-    }
 }

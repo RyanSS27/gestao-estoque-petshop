@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Diagrama UML - Vendas">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Venda -->
+        <mxCell id="venda" value="Venda&#xa;-------------------------&#xa;- id: Long&#xa;- estado: EstadoVenda&#xa;- valorTotal: BigDecimal&#xa;- metodoPagamento: MetodoPagamento&#xa;- comentarios: List&lt;String&gt;&#xa;&#xa;-------------------------&#xa;+ adicionarItem(item: ItemVenda): void&#xa;+ calcularTotal(): BigDecimal&#xa;+ alterarEstado(estado: EstadoVenda, descricao: String): void&#xa;+ pagar(): boolean" style="shape=rectangle;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="420" y="80" width="300" height="260" as="geometry"/>
+        </mxCell>
+
+        <!-- ItemVenda -->
+        <mxCell id="itemVenda" value="ItemVenda&#xa;-------------------------&#xa;- id: Long&#xa;- nomeProduto: String&#xa;- precoUnitario: BigDecimal&#xa;- quantidade: int&#xa;&#xa;-------------------------&#xa;+ gerarSubTotal(): BigDecimal" style="shape=rectangle;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="420" y="380" width="300" height="200" as="geometry"/>
+        </mxCell>
+
+        <!-- Produto -->
+        <mxCell id="produto" value="Produto&#xa;-------------------------&#xa;- id: Long&#xa;- nome: String&#xa;- preco: BigDecimal&#xa;- quantidade: int&#xa;- descricao: String&#xa;- categoria: CategoriaProduto&#xa;&#xa;-------------------------&#xa;+ adicionarEstoque(qtd: int): void&#xa;+ retirarEstoque(qtd: int): void&#xa;+ vender(qtd: int): boolean" style="shape=rectangle;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="380" width="300" height="240" as="geometry"/>
+        </mxCell>
+
+        <!-- Fornecedor -->
+        <mxCell id="fornecedor" value="Fornecedor&#xa;-------------------------&#xa;- id: Long&#xa;- nome: String&#xa;- contato: String" style="shape=rectangle;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="680" width="300" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- AlteracaoVenda -->
+        <mxCell id="alteracao" value="AlteracaoVenda&#xa;-------------------------&#xa;- descricao: String&#xa;- data: LocalDateTime" style="shape=rectangle;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="380" width="260" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- ENUM EstadoVenda -->
+        <mxCell id="estado" value="&lt;&lt;enumeration&gt;&gt;&#xa;EstadoVenda&#xa;-------------------------&#xa;PENDENTE&#xa;PAGA&#xa;ESTORNADA" style="shape=rectangle;whiteSpace=wrap;html=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="80" width="200" height="160" as="geometry"/>
+        </mxCell>
+
+        <!-- ENUM MetodoPagamento -->
+        <mxCell id="pagamento" value="&lt;&lt;enumeration&gt;&gt;&#xa;MetodoPagamento&#xa;-------------------------&#xa;DINHEIRO&#xa;PIX&#xa;CARTAO_DEBITO&#xa;CARTAO_CREDITO" style="shape=rectangle;whiteSpace=wrap;html=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="80" width="240" height="180" as="geometry"/>
+        </mxCell>
+
+        <!-- ENUM CategoriaProduto -->
+        <mxCell id="categoria" value="&lt;&lt;enumeration&gt;&gt;&#xa;CategoriaProduto&#xa;-------------------------&#xa;RACAO&#xa;BRINQUEDO&#xa;VIVEIRO&#xa;ACESSORIOS&#xa;SAUDE&#xa;COMIDA" style="shape=rectangle;whiteSpace=wrap;html=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="80" width="260" height="200" as="geometry"/>
+        </mxCell>
+
+        <!-- RELACIONAMENTOS -->
+
+        <!-- Venda 1..* ItemVenda -->
+        <mxCell id="rel1" value="1..*" style="endArrow=none;html=1;" edge="1" parent="1" source="venda" target="itemVenda">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Venda 1..* AlteracaoVenda -->
+        <mxCell id="rel2" value="1..*" style="endArrow=none;html=1;" edge="1" parent="1" source="venda" target="alteracao">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Produto *..* Fornecedor -->
+        <mxCell id="rel3" value="*..*" style="endArrow=none;html=1;" edge="1" parent="1" source="produto" target="fornecedor">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Dependências enums -->
+        <mxCell id="rel4" style="dashed=1;endArrow=open;html=1;" edge="1" parent="1" source="venda" target="estado">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel5" style="dashed=1;endArrow=open;html=1;" edge="1" parent="1" source="venda" target="pagamento">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel6" style="dashed=1;endArrow=open;html=1;" edge="1" parent="1" source="produto" target="categoria">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

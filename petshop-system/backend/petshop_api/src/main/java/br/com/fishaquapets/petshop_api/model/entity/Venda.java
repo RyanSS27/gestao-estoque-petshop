@@ -1,6 +1,6 @@
 package br.com.fishaquapets.petshop_api.model.entity;
 
-import br.com.fishaquapets.petshop_api.model.enums.EstadoVenda;
+import br.com.fishaquapets.petshop_api.model.enums.EstadoPagamento;
 import br.com.fishaquapets.petshop_api.model.enums.MetodoPagamento;
 import jakarta.persistence.*;
 
@@ -16,7 +16,7 @@ public class Venda {
 
     @Column(nullable = false)
     private List<ItemVenda> itens;
-    private EstadoVenda estado;
+    private EstadoPagamento estado;
 
     @Column(name = "valor_total", nullable = false)
     private BigDecimal valorTotal;
@@ -37,13 +37,13 @@ public class Venda {
         return BigDecimal.valueOf(0);
     }
 
-    public void alterarEstado(EstadoVenda estado, String descricao) {
+    public void alterarEstado(EstadoPagamento estado, String descricao) {
         this.estado = estado;
         this.historico.add(new AlteracaoVenda(descricao));
     }
 
     public boolean pagar() {
-        this.estado = EstadoVenda.PAGA;
+        this.estado = EstadoPagamento.PAGA;
         return true;
     }
 }
