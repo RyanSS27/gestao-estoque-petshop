@@ -1,0 +1,87 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+title Diagrama de Classes - Módulo de Vendas
+
+class Venda {
+  - id: Long
+  - estado: EstadoVenda
+  - valorTotal: BigDecimal
+  - metodoPagamento: MetodoPagamento
+  - comentarios: List<String>
+  --
+  + adicionarItem(item: ItemVenda): void
+  + calcularTotal(): BigDecimal
+  + alterarEstado(estado: EstadoVenda, descricao: String): void
+  + pagar(): boolean
+}
+
+class ItemVenda {
+  - id: Long
+  - nomeProduto: String
+  - precoUnitario: BigDecimal
+  - quantidade: int
+  --
+  + gerarSubTotal(): BigDecimal
+}
+
+class Produto {
+  - id: Long
+  - nome: String
+  - preco: BigDecimal
+  - quantidade: int
+  - descricao: String
+  - categoria: CategoriaProduto
+  --
+  + adicionarEstoque(qtd: int): void
+  + retirarEstoque(qtd: int): void
+  + vender(qtd: int): boolean
+}
+
+class Fornecedor {
+  - id: Long
+  - nome: String
+  - contato: String
+}
+
+class AlteracaoVenda {
+  - descricao: String
+  - data: LocalDateTime
+}
+
+enum EstadoVenda {
+  PENDENTE
+  PAGA
+  ESTORNADA
+}
+
+enum MetodoPagamento {
+  DINHEIRO
+  PIX
+  CARTAO_DEBITO
+  CARTAO_CREDITO
+}
+
+enum CategoriaProduto {
+  RACAO
+  BRINQUEDO
+  VIVEIRO
+  ACESSORIOS
+  SAUDE
+  COMIDA
+}
+
+' =========================
+' RELACIONAMENTOS
+' =========================
+
+Venda "1" *-- "1..*" ItemVenda : contém
+Venda "1" *-- "0..*" AlteracaoVenda : histórico
+
+Produto "*" -- "*" Fornecedor : fornecido por
+
+Venda --> EstadoVenda
+Venda --> MetodoPagamento
+Produto --> CategoriaProduto
+
+@enduml

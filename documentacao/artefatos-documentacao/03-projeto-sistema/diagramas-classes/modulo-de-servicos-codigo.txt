@@ -1,0 +1,65 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+title Diagrama de Classes - Módulo de Serviços
+
+class PrestacaoServico {
+  - id: Long
+  - data: LocalDateTime
+  - local: String
+  - estado: EstadoPagamento
+  - valorTotal: BigDecimal
+  - metodoPagamento: MetodoPagamento
+  - descricao: String
+  --
+  + adicionarNota(nota: NotaEdicao): void
+  + removerNota(nota: NotaEdicao): void
+}
+
+class Servico {
+  - id: Long
+  - nome: String
+  - precoBase: BigDecimal
+  - descricao: String
+  - categoria: CategoriaServico
+}
+
+class NotaEdicao {
+  - id: Long
+  - descricao: String
+  - data: LocalDateTime
+}
+
+enum CategoriaServico {
+  LIMPEZA
+  MANUTENCAO
+  INSTALACAO
+  DOMESTICACAO
+  ANIMAL
+}
+
+enum EstadoPagamento {
+  PENDENTE
+  PAGA
+  ESTORNADA
+}
+
+enum MetodoPagamento {
+  DINHEIRO
+  PIX
+  CARTAO_DEBITO
+  CARTAO_CREDITO
+}
+
+' =========================
+' RELACIONAMENTOS
+' =========================
+
+PrestacaoServico "1" *-- "0..*" NotaEdicao : notas
+PrestacaoServico "1" -- "*" Servico : serviços
+
+PrestacaoServico --> EstadoPagamento
+PrestacaoServico --> MetodoPagamento
+Servico --> CategoriaServico
+
+@enduml
