@@ -5,6 +5,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/backend/petshop_api/pom.xml" />
+        <option value="$PROJECT_DIR$/petshop-api/petshop-api/pom.xml" />
       </list>
     </option>
   </component>
