@@ -76,7 +76,7 @@ public class Produto implements Serializable {
         categorias.removeIf(x -> x.getId().equals(id));
     }
 
-    public void add(Fornecedor fornecedor) {
+    public void addFornecedor(Fornecedor fornecedor) {
         fornecedores.add(fornecedor);
     }
 
