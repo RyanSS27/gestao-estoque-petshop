@@ -1,12 +1,15 @@
 package com.fishaquapets.petshop_api.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,6 +21,7 @@ public class Fornecedor implements Serializable {
     @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id_fornecedor")
     private Long id;
 
     @Column(nullable = false)
@@ -26,8 +30,11 @@ public class Fornecedor implements Serializable {
     @Column
     private String contato;
 
-    public Fornecedor() {}
+    @JsonIgnore
+    @ManyToMany(mappedBy = "fornecedores")
+    private Set<Produto> produtos = new HashSet<>();
 
+    public Fornecedor() {}
 
     public Fornecedor(Long id, String nome, String contato) {
         this.id = id;
