@@ -26,6 +26,21 @@ Além do desenvolvimento do software, o projeto também busca aplicar **conceito
 * documentação e boas práticas de desenvolvimento
 
 ---
+# 🎨 Front-end — FishAqua Pets
+
+Uma prévia da Interface do sistema focada em usabilidade e visual intuitivo.
+
+## Protótipo das telas principais
+
+* **Dashboard e Menu Lateral:** visão geral com métricas e gráfico semanal e navegação rápida
+  
+  <img width="1277" height="798" alt="Captura de tela de 2026-04-28 09-03-48" src="https://github.com/user-attachments/assets/7e45026f-743f-415d-ac56-a9e27a8ae73d" />
+
+* **Recibos & Fiscal:** listagem, busca e status de recibos
+
+  <img width="1131" height="710" alt="Captura de tela de 2026-04-28 09-27-27" src="https://github.com/user-attachments/assets/ff8ac31e-5354-4b65-af03-ff77b3ad1d12" />
+
+---
 
 # 🏗 Arquitetura do Sistema
 
