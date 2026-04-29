@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,7 +16,8 @@ import java.util.Set;
 @Entity
 @Table(name = "produtos")
 public class Produto implements Serializable {
-    private static final long serialVersionID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Setter(AccessLevel.NONE)
     @Id
@@ -29,8 +31,10 @@ public class Produto implements Serializable {
 
     @Column
     private String descricao;
+    private int quantidade;
+
+    @Column(name = "porcentagem_desconto")
     private BigDecimal porcentagemDesconto; // 0-100
-    // ainda farei os métodos de calculo do desconto
 
     @Column(name = "preco_de_venda")
     private BigDecimal precoDeVenda;
@@ -96,6 +100,26 @@ public class Produto implements Serializable {
         } else {
             this.precoDeVenda = this.preco; // Sem desconto, o preço de venda é o preço original
         }
+    }
+
+    public boolean vender(int qtd) {
+        // deixei caso venha a se inserir alguma regra de negócio
+        return reduzirEstoque(qtd);
+    }
+
+    public void adicionarEstoque(int quantidade) {
+        if(quantidade <= 0) throw new IllegalArgumentException("A quantidade deve ser positiva");
+
+        this.quantidade += quantidade;
+    }
+
+    public boolean reduzirEstoque(int quantidade) {
+        if (quantidade <= 0) return false;
+        if (this.quantidade >= quantidade) {
+            this.quantidade -= quantidade;
+            return true;
+        }
+        return false;
     }
 
     // Gatilhos do JPA para garantir que o cálculo ocorra antes de salvar no banco

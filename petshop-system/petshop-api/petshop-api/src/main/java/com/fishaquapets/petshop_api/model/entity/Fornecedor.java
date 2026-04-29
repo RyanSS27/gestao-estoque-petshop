@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -16,7 +17,8 @@ import java.util.Set;
 @Entity
 @Table(name = "fornecedores")
 public class Fornecedor implements Serializable {
-    private static final long serialVersionID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Setter(AccessLevel.NONE)
     @Id
