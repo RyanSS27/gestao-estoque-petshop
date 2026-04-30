@@ -127,7 +127,50 @@ public class TestConfig implements CommandLineRunner {
         vendaRepository.save(v4);
         itemPedidoRepository.saveAll(v4.getItens());
 
-        
+        // VENDAS COM CASOS ESPECIAIS
+        // -------------------------------------------------------------------------
+        // VENDA 5: Venda de Kit de Aquarismo Completo (Grande Quantidade)
+        // -------------------------------------------------------------------------
+        Venda v5 = new Venda(null, EstadoPagamento.PAGA, MetodoPagamento.CARTAO_DEBITO,
+                new BigDecimal("415.00"),
+                Arrays.asList("Venda de kit iniciante", "Cliente solicitou teste de água"));
+        v5.addItem(p4, 1); // Aquário
+        v5.addItem(p6, 1); // Filtro
+        v5.addItem(p7, 1); // Termostato
+        v5.addItem(p8, 1); // Luminária
+        vendaRepository.save(v5);
+        itemPedidoRepository.saveAll(v5.getItens());
+
+        // -------------------------------------------------------------------------
+        // VENDA 6: Venda ESTORNADA (Devolução de produto)
+        // -------------------------------------------------------------------------
+        Venda v6 = new Venda(null, EstadoPagamento.ESTORNADA, MetodoPagamento.CARTAO_CREDITO,
+                BigDecimal.ZERO,
+                Arrays.asList("Produto devolvido por incompatibilidade", "Estorno processado no cartão"));
+        v6.addItem(p3, 2); // 2 Coleiras
+        vendaRepository.save(v6);
+        itemPedidoRepository.saveAll(v6.getItens());
+
+        // -------------------------------------------------------------------------
+        // VENDA 7: Venda de Alto Volume (Estoque de Ração)
+        // -------------------------------------------------------------------------
+        Venda v7 = new Venda(null, EstadoPagamento.PAGA, MetodoPagamento.PIX,
+                new BigDecimal("1125.00"),
+                Arrays.asList("Venda para ONG de proteção animal", "Desconto adicional aplicado via cupom"));
+        v7.addItem(p1, 5); // 5 sacos de ração premium
+        vendaRepository.save(v7);
+        itemPedidoRepository.saveAll(v7.getItens());
+
+        // -------------------------------------------------------------------------
+        // VENDA 8: Pagamento Parcial com múltiplos itens de higiene
+        // -------------------------------------------------------------------------
+        Venda v8 = new Venda(null, EstadoPagamento.PAGAMENTO_PARCIAL, MetodoPagamento.DINHEIRO,
+                new BigDecimal("50.00"),
+                Arrays.asList("Cliente pagou parte em dinheiro", "Restante será pago na retirada"));
+        v8.addItem(p2, 4); // 4 Shampoos
+        v8.addItem(p3, 1); // 1 Coleira
+        vendaRepository.save(v8);
+        itemPedidoRepository.saveAll(v8.getItens());
 
         System.out.println("Seeding realizado com sucesso!");
     }
