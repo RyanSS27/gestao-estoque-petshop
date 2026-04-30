@@ -3,9 +3,10 @@ package com.fishaquapets.petshop_api;
 import com.fishaquapets.petshop_api.model.entity.Categoria;
 import com.fishaquapets.petshop_api.model.entity.Fornecedor;
 import com.fishaquapets.petshop_api.model.entity.Produto;
-import com.fishaquapets.petshop_api.repository.CategoriaRepository;
-import com.fishaquapets.petshop_api.repository.FornecedorRepository;
-import com.fishaquapets.petshop_api.repository.ProdutoRepository;
+import com.fishaquapets.petshop_api.model.entity.Venda;
+import com.fishaquapets.petshop_api.model.enums.EstadoPagamento;
+import com.fishaquapets.petshop_api.model.enums.MetodoPagamento;
+import com.fishaquapets.petshop_api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,10 @@ public class TestConfig implements CommandLineRunner {
     private FornecedorRepository fornecedorRepository;
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+    private VendaRepository vendaRepository;
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -92,6 +97,37 @@ public class TestConfig implements CommandLineRunner {
         p8.addFornecedor(f4);
 
         produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8));
+
+        // Vendas
+        // Venda 1: Pagamento integral via PIX
+        Venda v1 = new Venda(null, EstadoPagamento.PAGA, MetodoPagamento.PIX, new BigDecimal("225.00"), Arrays.asList("Entrega realizada na portaria"));
+        v1.addItem(p1, 1);
+        vendaRepository.save(v1);
+        itemPedidoRepository.saveAll(v1.getItens());
+
+        // Venda 2: Pagou apenas uma parte do aquário e acessórios no cartão de crédito
+        Venda v2 = new Venda(null, EstadoPagamento.PAGAMENTO_PARCIAL, MetodoPagamento.CARTAO_CREDITO, new BigDecimal("500.00"), Arrays.asList("Cliente solicitará instalação posterior"));
+        v2.addItem(p5, 1);
+        v2.addItem(p6, 1);
+        v2.addItem(p7, 1);
+        vendaRepository.save(v2);
+        itemPedidoRepository.saveAll(v2.getItens());
+
+        // Venda 3: Venda pendente em dinheiro para retirada futura
+        Venda v3 = new Venda(null, EstadoPagamento.PENDENTE, MetodoPagamento.DINHEIRO, BigDecimal.ZERO, Arrays.asList("Aguardando retirada em loja"));
+        v3.addItem(p4, 1);
+        v3.addItem(p2, 2);
+        vendaRepository.save(v3);
+        itemPedidoRepository.saveAll(v3.getItens());
+
+        // Venda 4: Venda paga no débito com múltiplos itens pequenos
+        Venda v4 = new Venda(null, EstadoPagamento.PAGA, MetodoPagamento.CARTAO_DEBITO, new BigDecimal("121.00"), Arrays.asList("Cliente utilizou sacola própria"));
+        v4.addItem(p3, 1);
+        v4.addItem(p2, 1);
+        vendaRepository.save(v4);
+        itemPedidoRepository.saveAll(v4.getItens());
+
+        
 
         System.out.println("Seeding realizado com sucesso!");
     }
