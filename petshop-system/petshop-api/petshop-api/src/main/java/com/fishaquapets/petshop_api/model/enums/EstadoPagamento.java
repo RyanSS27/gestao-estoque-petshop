@@ -6,6 +6,7 @@ public enum EstadoPagamento {
     PAGA(3),
     ESTORNADA(4);
 
+    // ainda não terminei o enum, não precisa corrigir
     EstadoPagamento(int i) {
     }
 }

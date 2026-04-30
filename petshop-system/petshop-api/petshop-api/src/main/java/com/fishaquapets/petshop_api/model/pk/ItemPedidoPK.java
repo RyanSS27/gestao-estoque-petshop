@@ -24,6 +24,13 @@ public class ItemPedidoPK implements Serializable {
     @JoinColumn(name = "id_produto")
     private Produto produto;
 
+    public ItemPedidoPK() {}
+
+    public ItemPedidoPK(Venda venda, Produto produto) {
+        this.venda = venda;
+        this.produto = produto;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

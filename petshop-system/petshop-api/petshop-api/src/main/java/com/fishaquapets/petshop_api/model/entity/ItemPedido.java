@@ -21,7 +21,7 @@ import java.util.Objects;
 public class ItemPedido {
     @Setter(AccessLevel.NONE)
     @EmbeddedId // id integrado
-    private ItemPedidoPK id = new ItemPedidoPK();
+    private ItemPedidoPK id;
 
     @Column
     private Integer quantidade;
@@ -29,8 +29,13 @@ public class ItemPedido {
     @Column(name = "preco_unitario")
     private BigDecimal valorUnitario;
 
-    @Column(name = "sub_total")
-    private BigDecimal subTotal;
+    public ItemPedido() {}
+
+    public ItemPedido(Venda venda, Produto produto, Integer quantidade) {
+        this.id = new ItemPedidoPK(venda, produto);
+        this.quantidade = quantidade;
+        this.valorUnitario = produto.getPrecoDeVenda();
+    }
 
     public BigDecimal getSubTotal() {
         if (valorUnitario == null || quantidade == null)
@@ -47,6 +52,22 @@ public class ItemPedido {
     public Produto getProduto() {
         return id.getProduto();
     }
+
+    public void atualizarQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    /*
+        Por enquanto, não utilizados (passíveis de remoção):
+
+        public void adicionar(int quantidade) {
+            this.quantidade += quantidade;
+        }
+
+        public void retirara(int quantidade) {
+            this.quantidade += quantidade;
+        }
+    */
 
     @Override
     public boolean equals(Object o) {

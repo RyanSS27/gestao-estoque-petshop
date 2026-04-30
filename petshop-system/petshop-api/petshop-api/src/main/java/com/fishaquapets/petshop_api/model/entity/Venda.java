@@ -51,13 +51,16 @@ public class Venda implements Serializable {
 
     public Venda() {}
 
-    public Venda(Long id, EstadoPagamento estadoPagamento, MetodoPagamento metodoPagamento, BigDecimal pagamento, Set<ItemPedido> itens, List<String> comentarios) {
+    public Venda(
+            Long id, EstadoPagamento estadoPagamento,
+            MetodoPagamento metodoPagamento, BigDecimal pagamento, List<String> comentarios
+    ) {
         this.id = id;
         this.estadoPagamento = estadoPagamento;
         this.metodoPagamento = metodoPagamento;
         this.pagamento = pagamento;
-        this.itens = itens;
         this.comentarios = comentarios;
+        calcularValorTotal();
     }
 
     public void calcularValorTotal() {
@@ -73,4 +76,15 @@ public class Venda implements Serializable {
     }
 
     // Falta criar os métodos de adição/subtração de itens
+    public void addItem(Produto produto, Integer quantidade) {
+        this.itens.add(new ItemPedido(this, produto, quantidade));
+    }
+
+    public void removeItem(ItemPedido itemPedido) {
+        this.itens.remove(itemPedido);
+    }
+
+    public void addComentario(String comentario) {
+        this.comentarios.add(comentario);
+    }
 }
