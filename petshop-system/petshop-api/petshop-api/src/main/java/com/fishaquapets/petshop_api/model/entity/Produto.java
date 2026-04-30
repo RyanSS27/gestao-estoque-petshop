@@ -2,6 +2,7 @@ package com.fishaquapets.petshop_api.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serial;
@@ -13,6 +14,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "produtos")
 public class Produto implements Serializable {
@@ -53,9 +56,9 @@ public class Produto implements Serializable {
     @ManyToMany
     @JoinTable(
             // Tabela de associação entre produtos e fornecedores
-            name = "produto_fornecedor",
-            joinColumns = @JoinColumn(name = "id_produto"),
-            inverseJoinColumns = @JoinColumn(name = "id_fornecedor")
+            name = "produto_fornecedor", // nome da nova tabela
+            joinColumns = @JoinColumn(name = "id_produto"), // nome da coluna
+            inverseJoinColumns = @JoinColumn(name = "id_fornecedor") // nome da coluna
     )
     private Set<Fornecedor> fornecedores = new HashSet<>();
 

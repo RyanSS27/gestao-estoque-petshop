@@ -26,6 +26,7 @@ public class Venda implements Serializable {
     @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id_venda")
     private Long id;
 
     @Column(name = "estado_pagamento", nullable = false)
@@ -40,6 +41,7 @@ public class Venda implements Serializable {
     @Column
     private BigDecimal pagamento;
 
+    @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "id.venda")
     private Set<ItemPedido> itens = new HashSet<>();
 
@@ -49,13 +51,26 @@ public class Venda implements Serializable {
 
     public Venda() {}
 
-    public Venda(Long id, EstadoPagamento estadoPagamento, BigDecimal valorTotal, MetodoPagamento metodoPagamento, BigDecimal pagamento, Set<ItemPedido> itens, List<String> comentarios) {
+    public Venda(Long id, EstadoPagamento estadoPagamento, MetodoPagamento metodoPagamento, BigDecimal pagamento, Set<ItemPedido> itens, List<String> comentarios) {
         this.id = id;
         this.estadoPagamento = estadoPagamento;
-        this.valorTotal = valorTotal;
         this.metodoPagamento = metodoPagamento;
         this.pagamento = pagamento;
         this.itens = itens;
         this.comentarios = comentarios;
     }
+
+    public void calcularValorTotal() {
+        this.valorTotal = itens.stream()
+                .map(ItemPedido::getSubTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @PrePersist
+    @PreUpdate
+    private void atualizarTotal() {
+        calcularValorTotal();
+    }
+
+    // Falta criar os métodos de adição/subtração de itens
 }
