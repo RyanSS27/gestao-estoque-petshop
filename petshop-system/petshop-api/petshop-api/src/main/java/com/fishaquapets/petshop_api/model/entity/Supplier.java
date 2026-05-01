@@ -33,7 +33,7 @@ public class Supplier implements Serializable {
     private String contato;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "fornecedores")
+    @ManyToMany(mappedBy = "suppliers")
     private Set<Product> products = new HashSet<>();
 
     public Supplier() {}

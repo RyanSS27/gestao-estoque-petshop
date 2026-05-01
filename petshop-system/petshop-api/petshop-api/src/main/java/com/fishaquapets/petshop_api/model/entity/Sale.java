@@ -42,7 +42,7 @@ public class Sale implements Serializable {
     private BigDecimal pagamento;
 
     @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "id.venda")
+    @OneToMany(mappedBy = "id.sale")
     private Set<OrderItem> itens = new HashSet<>();
 
     @Setter(AccessLevel.NONE)

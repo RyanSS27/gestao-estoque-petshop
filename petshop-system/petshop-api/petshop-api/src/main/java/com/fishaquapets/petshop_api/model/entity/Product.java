@@ -59,7 +59,7 @@ public class Product implements Serializable {
             joinColumns = @JoinColumn(name = "id_produto"), // nome da coluna
             inverseJoinColumns = @JoinColumn(name = "id_fornecedor") // nome da coluna
     )
-    private Set<Supplier> fornecedores = new HashSet<>();
+    private Set<Supplier> suppliers = new HashSet<>();
 
     public Product() {}
 
@@ -83,11 +83,11 @@ public class Product implements Serializable {
     }
 
     public void addFornecedor(Supplier supplier) {
-        fornecedores.add(supplier);
+        suppliers.add(supplier);
     }
 
     public void removeFornecedor(Long id) {
-        fornecedores.removeIf(x -> x.getId().equals(id));
+        suppliers.removeIf(x -> x.getId().equals(id));
     }
 
     public void calcularPrecoDeVenda() {
