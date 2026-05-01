@@ -9,7 +9,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -18,7 +17,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "produtos")
-public class Produto implements Serializable {
+public class Product implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -50,7 +49,7 @@ public class Produto implements Serializable {
             joinColumns = @JoinColumn(name = "id_produto"),
             inverseJoinColumns = @JoinColumn(name = "id_categoria")
     )
-    private Set<Categoria> categorias = new HashSet<>();
+    private Set<Category> categories = new HashSet<>();
 
     @Setter(AccessLevel.NONE)
     @ManyToMany
@@ -60,11 +59,11 @@ public class Produto implements Serializable {
             joinColumns = @JoinColumn(name = "id_produto"), // nome da coluna
             inverseJoinColumns = @JoinColumn(name = "id_fornecedor") // nome da coluna
     )
-    private Set<Fornecedor> fornecedores = new HashSet<>();
+    private Set<Supplier> fornecedores = new HashSet<>();
 
-    public Produto() {}
+    public Product() {}
 
-    public Produto(Long id, String nome, BigDecimal preco, String descricao, BigDecimal porcentagemDesconto) {
+    public Product(Long id, String nome, BigDecimal preco, String descricao, BigDecimal porcentagemDesconto) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
@@ -75,16 +74,16 @@ public class Produto implements Serializable {
     }
 
 
-    public void addCategoria(Categoria categoria) {
-        categorias.add(categoria);
+    public void addCategoria(Category category) {
+        categories.add(category);
     }
 
     public void removeCategoria(Long id) {
-        categorias.removeIf(x -> x.getId().equals(id));
+        categories.removeIf(x -> x.getId().equals(id));
     }
 
-    public void addFornecedor(Fornecedor fornecedor) {
-        fornecedores.add(fornecedor);
+    public void addFornecedor(Supplier supplier) {
+        fornecedores.add(supplier);
     }
 
     public void removeFornecedor(Long id) {
@@ -135,8 +134,8 @@ public class Produto implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Produto produto = (Produto) o;
-        return Objects.equals(id, produto.id);
+        Product product = (Product) o;
+        return Objects.equals(id, product.id);
     }
 
     @Override

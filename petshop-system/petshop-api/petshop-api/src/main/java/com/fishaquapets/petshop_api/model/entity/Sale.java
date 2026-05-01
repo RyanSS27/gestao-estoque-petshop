@@ -1,7 +1,7 @@
 package com.fishaquapets.petshop_api.model.entity;
 
-import com.fishaquapets.petshop_api.model.enums.EstadoPagamento;
-import com.fishaquapets.petshop_api.model.enums.MetodoPagamento;
+import com.fishaquapets.petshop_api.model.enums.PaymentStatus;
+import com.fishaquapets.petshop_api.model.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,7 +19,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "vendas")
-public class Venda implements Serializable {
+public class Sale implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -30,34 +30,34 @@ public class Venda implements Serializable {
     private Long id;
 
     @Column(name = "estado_pagamento", nullable = false)
-    private EstadoPagamento estadoPagamento;
+    private PaymentStatus paymentStatus;
 
     @Column(name = "valor_total", nullable = false)
     private BigDecimal valorTotal;
 
     @Column(name = "metodo_pagamento", nullable = false)
-    private MetodoPagamento metodoPagamento;
+    private PaymentMethod paymentMethod;
 
     @Column
     private BigDecimal pagamento;
 
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "id.venda")
-    private Set<ItemPedido> itens = new HashSet<>();
+    private Set<OrderItem> itens = new HashSet<>();
 
     @Setter(AccessLevel.NONE)
     private List<String> comentarios = new ArrayList<>();
 
 
-    public Venda() {}
+    public Sale() {}
 
-    public Venda(
-            Long id, EstadoPagamento estadoPagamento,
-            MetodoPagamento metodoPagamento, BigDecimal pagamento, List<String> comentarios
+    public Sale(
+            Long id, PaymentStatus paymentStatus,
+            PaymentMethod paymentMethod, BigDecimal pagamento, List<String> comentarios
     ) {
         this.id = id;
-        this.estadoPagamento = estadoPagamento;
-        this.metodoPagamento = metodoPagamento;
+        this.paymentStatus = paymentStatus;
+        this.paymentMethod = paymentMethod;
         this.pagamento = pagamento;
         this.comentarios = comentarios;
         calcularValorTotal();
@@ -65,7 +65,7 @@ public class Venda implements Serializable {
 
     public void calcularValorTotal() {
         this.valorTotal = itens.stream()
-                .map(ItemPedido::getSubTotal)
+                .map(OrderItem::getSubTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -76,12 +76,12 @@ public class Venda implements Serializable {
     }
 
     // Falta criar os métodos de adição/subtração de itens
-    public void addItem(Produto produto, Integer quantidade) {
-        this.itens.add(new ItemPedido(this, produto, quantidade));
+    public void addItem(Product product, Integer quantidade) {
+        this.itens.add(new OrderItem(this, product, quantidade));
     }
 
-    public void removeItem(ItemPedido itemPedido) {
-        this.itens.remove(itemPedido);
+    public void removeItem(OrderItem orderItem) {
+        this.itens.remove(orderItem);
     }
 
     public void addComentario(String comentario) {

@@ -1,11 +1,11 @@
 package com.fishaquapets.petshop_api;
 
-import com.fishaquapets.petshop_api.model.entity.Categoria;
-import com.fishaquapets.petshop_api.model.entity.Fornecedor;
-import com.fishaquapets.petshop_api.model.entity.Produto;
-import com.fishaquapets.petshop_api.model.entity.Venda;
-import com.fishaquapets.petshop_api.model.enums.EstadoPagamento;
-import com.fishaquapets.petshop_api.model.enums.MetodoPagamento;
+import com.fishaquapets.petshop_api.model.entity.Category;
+import com.fishaquapets.petshop_api.model.entity.Supplier;
+import com.fishaquapets.petshop_api.model.entity.Product;
+import com.fishaquapets.petshop_api.model.entity.Sale;
+import com.fishaquapets.petshop_api.model.enums.PaymentStatus;
+import com.fishaquapets.petshop_api.model.enums.PaymentMethod;
 import com.fishaquapets.petshop_api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,55 +19,55 @@ import java.util.Arrays;
 @Profile("test")
 public class TestConfig implements CommandLineRunner {
     @Autowired
-    private CategoriaRepository categoriaRepository;
+    private CategoryRepository categoryRepository;
     @Autowired
-    private FornecedorRepository fornecedorRepository;
+    private SupplierRepository supplierRepository;
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private ProductRepository productRepository;
     @Autowired
-    private VendaRepository vendaRepository;
+    private SaleRepository saleRepository;
     @Autowired
-    private ItemPedidoRepository itemPedidoRepository;
+    private OrderItemRepository orderItemRepository;
 
     @Override
     public void run(String... args) throws Exception {
         // Categorias
-        Categoria c1 = new Categoria(null, "Alimentos");
-        Categoria c2 = new Categoria(null, "Acessórios");
-        Categoria c3 = new Categoria(null, "Higiene");
-        Categoria c4 = new Categoria(null, "Peixes");
-        Categoria c5 = new Categoria(null, "Aquarismo");
-        categoriaRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5));
+        Category c1 = new Category(null, "Alimentos");
+        Category c2 = new Category(null, "Acessórios");
+        Category c3 = new Category(null, "Higiene");
+        Category c4 = new Category(null, "Peixes");
+        Category c5 = new Category(null, "Aquarismo");
+        categoryRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5));
 
         // Fornecedores
-        Fornecedor f1 = new Fornecedor(null, "PetDistribuidora S.A.", "contato@petdist.com");
-        Fornecedor f2 = new Fornecedor(null, "MegaPet Atacado", "vendas@megapet.com");
-        Fornecedor f3 = new Fornecedor(null, "Aquários Brasil Ltda.", "contato@aquabrasil.com");
-        Fornecedor f4 = new Fornecedor(null, "OceanTech", "suporte@oceantech.com");
-        fornecedorRepository.saveAll(Arrays.asList(f1, f2, f3, f4));
+        Supplier f1 = new Supplier(null, "PetDistribuidora S.A.", "contato@petdist.com");
+        Supplier f2 = new Supplier(null, "MegaPet Atacado", "vendas@megapet.com");
+        Supplier f3 = new Supplier(null, "Aquários Brasil Ltda.", "contato@aquabrasil.com");
+        Supplier f4 = new Supplier(null, "OceanTech", "suporte@oceantech.com");
+        supplierRepository.saveAll(Arrays.asList(f1, f2, f3, f4));
 
         // Produtos
-        Produto p1 = new Produto(null, "Ração Premium 15kg", new BigDecimal("250.00"),
+        Product p1 = new Product(null, "Ração Premium 15kg", new BigDecimal("250.00"),
                 "Ração de alta qualidade para cães adultos", new BigDecimal("10.00"));
 
-        Produto p2 = new Produto(null, "Shampoo Pet suave", new BigDecimal("45.00"),
+        Product p2 = new Product(null, "Shampoo Pet suave", new BigDecimal("45.00"),
                 "Shampoo hipoalergênico", BigDecimal.ZERO);
 
-        Produto p3 = new Produto(null, "Coleira de Couro", new BigDecimal("80.00"),
+        Product p3 = new Product(null, "Coleira de Couro", new BigDecimal("80.00"),
                 "Coleira resistente tamanho G", new BigDecimal("5.00"));
-        Produto p4 = new Produto(null, "Aquário 20L Básico", new BigDecimal("150.00"),
+        Product p4 = new Product(null, "Aquário 20L Básico", new BigDecimal("150.00"),
                 "Aquário de vidro simples com tampa", new BigDecimal("5.00"));
 
-        Produto p5 = new Produto(null, "Aquário 100L Profissional", new BigDecimal("850.00"),
+        Product p5 = new Product(null, "Aquário 100L Profissional", new BigDecimal("850.00"),
                 "Vidro extra clear com acabamento em silicone preto", new BigDecimal("10.00"));
 
-        Produto p6 = new Produto(null, "Filtro Externo Hang-on 300L/H", new BigDecimal("120.00"),
+        Product p6 = new Product(null, "Filtro Externo Hang-on 300L/H", new BigDecimal("120.00"),
                 "Filtragem química, física e biológica", BigDecimal.ZERO);
 
-        Produto p7 = new Produto(null, "Termostato 50W", new BigDecimal("85.00"),
+        Product p7 = new Product(null, "Termostato 50W", new BigDecimal("85.00"),
                 "Aquecedor automático com regulagem", new BigDecimal("15.00"));
 
-        Produto p8 = new Produto(null, "Luminária LED RGB 40cm", new BigDecimal("210.00"),
+        Product p8 = new Product(null, "Luminária LED RGB 40cm", new BigDecimal("210.00"),
                 "Iluminação potente para plantas naturais", new BigDecimal("8.00"));
 
         // Associando
@@ -96,81 +96,81 @@ public class TestConfig implements CommandLineRunner {
         p8.addCategoria(c2); // Aquarismo e Acessórios
         p8.addFornecedor(f4);
 
-        produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8));
+        productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8));
 
         // Vendas
         // Venda 1: Pagamento integral via PIX
-        Venda v1 = new Venda(null, EstadoPagamento.PAGA, MetodoPagamento.PIX, new BigDecimal("225.00"), Arrays.asList("Entrega realizada na portaria"));
+        Sale v1 = new Sale(null, PaymentStatus.PAGA, PaymentMethod.PIX, new BigDecimal("225.00"), Arrays.asList("Entrega realizada na portaria"));
         v1.addItem(p1, 1);
-        vendaRepository.save(v1);
-        itemPedidoRepository.saveAll(v1.getItens());
+        saleRepository.save(v1);
+        orderItemRepository.saveAll(v1.getItens());
 
         // Venda 2: Pagou apenas uma parte do aquário e acessórios no cartão de crédito
-        Venda v2 = new Venda(null, EstadoPagamento.PAGAMENTO_PARCIAL, MetodoPagamento.CARTAO_CREDITO, new BigDecimal("500.00"), Arrays.asList("Cliente solicitará instalação posterior"));
+        Sale v2 = new Sale(null, PaymentStatus.PAGAMENTO_PARCIAL, PaymentMethod.CARTAO_CREDITO, new BigDecimal("500.00"), Arrays.asList("Cliente solicitará instalação posterior"));
         v2.addItem(p5, 1);
         v2.addItem(p6, 1);
         v2.addItem(p7, 1);
-        vendaRepository.save(v2);
-        itemPedidoRepository.saveAll(v2.getItens());
+        saleRepository.save(v2);
+        orderItemRepository.saveAll(v2.getItens());
 
         // Venda 3: Venda pendente em dinheiro para retirada futura
-        Venda v3 = new Venda(null, EstadoPagamento.PENDENTE, MetodoPagamento.DINHEIRO, BigDecimal.ZERO, Arrays.asList("Aguardando retirada em loja"));
+        Sale v3 = new Sale(null, PaymentStatus.PENDENTE, PaymentMethod.DINHEIRO, BigDecimal.ZERO, Arrays.asList("Aguardando retirada em loja"));
         v3.addItem(p4, 1);
         v3.addItem(p2, 2);
-        vendaRepository.save(v3);
-        itemPedidoRepository.saveAll(v3.getItens());
+        saleRepository.save(v3);
+        orderItemRepository.saveAll(v3.getItens());
 
         // Venda 4: Venda paga no débito com múltiplos itens pequenos
-        Venda v4 = new Venda(null, EstadoPagamento.PAGA, MetodoPagamento.CARTAO_DEBITO, new BigDecimal("121.00"), Arrays.asList("Cliente utilizou sacola própria"));
+        Sale v4 = new Sale(null, PaymentStatus.PAGA, PaymentMethod.CARTAO_DEBITO, new BigDecimal("121.00"), Arrays.asList("Cliente utilizou sacola própria"));
         v4.addItem(p3, 1);
         v4.addItem(p2, 1);
-        vendaRepository.save(v4);
-        itemPedidoRepository.saveAll(v4.getItens());
+        saleRepository.save(v4);
+        orderItemRepository.saveAll(v4.getItens());
 
         // VENDAS COM CASOS ESPECIAIS
         // -------------------------------------------------------------------------
         // VENDA 5: Venda de Kit de Aquarismo Completo (Grande Quantidade)
         // -------------------------------------------------------------------------
-        Venda v5 = new Venda(null, EstadoPagamento.PAGA, MetodoPagamento.CARTAO_DEBITO,
+        Sale v5 = new Sale(null, PaymentStatus.PAGA, PaymentMethod.CARTAO_DEBITO,
                 new BigDecimal("415.00"),
                 Arrays.asList("Venda de kit iniciante", "Cliente solicitou teste de água"));
         v5.addItem(p4, 1); // Aquário
         v5.addItem(p6, 1); // Filtro
         v5.addItem(p7, 1); // Termostato
         v5.addItem(p8, 1); // Luminária
-        vendaRepository.save(v5);
-        itemPedidoRepository.saveAll(v5.getItens());
+        saleRepository.save(v5);
+        orderItemRepository.saveAll(v5.getItens());
 
         // -------------------------------------------------------------------------
         // VENDA 6: Venda ESTORNADA (Devolução de produto)
         // -------------------------------------------------------------------------
-        Venda v6 = new Venda(null, EstadoPagamento.ESTORNADA, MetodoPagamento.CARTAO_CREDITO,
+        Sale v6 = new Sale(null, PaymentStatus.ESTORNADA, PaymentMethod.CARTAO_CREDITO,
                 BigDecimal.ZERO,
                 Arrays.asList("Produto devolvido por incompatibilidade", "Estorno processado no cartão"));
         v6.addItem(p3, 2); // 2 Coleiras
-        vendaRepository.save(v6);
-        itemPedidoRepository.saveAll(v6.getItens());
+        saleRepository.save(v6);
+        orderItemRepository.saveAll(v6.getItens());
 
         // -------------------------------------------------------------------------
         // VENDA 7: Venda de Alto Volume (Estoque de Ração)
         // -------------------------------------------------------------------------
-        Venda v7 = new Venda(null, EstadoPagamento.PAGA, MetodoPagamento.PIX,
+        Sale v7 = new Sale(null, PaymentStatus.PAGA, PaymentMethod.PIX,
                 new BigDecimal("1125.00"),
                 Arrays.asList("Venda para ONG de proteção animal", "Desconto adicional aplicado via cupom"));
         v7.addItem(p1, 5); // 5 sacos de ração premium
-        vendaRepository.save(v7);
-        itemPedidoRepository.saveAll(v7.getItens());
+        saleRepository.save(v7);
+        orderItemRepository.saveAll(v7.getItens());
 
         // -------------------------------------------------------------------------
         // VENDA 8: Pagamento Parcial com múltiplos itens de higiene
         // -------------------------------------------------------------------------
-        Venda v8 = new Venda(null, EstadoPagamento.PAGAMENTO_PARCIAL, MetodoPagamento.DINHEIRO,
+        Sale v8 = new Sale(null, PaymentStatus.PAGAMENTO_PARCIAL, PaymentMethod.DINHEIRO,
                 new BigDecimal("50.00"),
                 Arrays.asList("Cliente pagou parte em dinheiro", "Restante será pago na retirada"));
         v8.addItem(p2, 4); // 4 Shampoos
         v8.addItem(p3, 1); // 1 Coleira
-        vendaRepository.save(v8);
-        itemPedidoRepository.saveAll(v8.getItens());
+        saleRepository.save(v8);
+        orderItemRepository.saveAll(v8.getItens());
 
         System.out.println("Seeding realizado com sucesso!");
     }

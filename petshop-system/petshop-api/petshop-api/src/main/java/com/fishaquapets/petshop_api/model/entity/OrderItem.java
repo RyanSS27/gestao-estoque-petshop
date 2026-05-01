@@ -2,7 +2,7 @@ package com.fishaquapets.petshop_api.model.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fishaquapets.petshop_api.model.pk.ItemPedidoPK;
+import com.fishaquapets.petshop_api.model.pk.OrderItemPK;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -18,10 +18,10 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "itens_pedido")
-public class ItemPedido {
+public class OrderItem {
     @Setter(AccessLevel.NONE)
     @EmbeddedId // id integrado
-    private ItemPedidoPK id;
+    private OrderItemPK id;
 
     @Column
     private Integer quantidade;
@@ -29,12 +29,12 @@ public class ItemPedido {
     @Column(name = "preco_unitario")
     private BigDecimal valorUnitario;
 
-    public ItemPedido() {}
+    public OrderItem() {}
 
-    public ItemPedido(Venda venda, Produto produto, Integer quantidade) {
-        this.id = new ItemPedidoPK(venda, produto);
+    public OrderItem(Sale sale, Product product, Integer quantidade) {
+        this.id = new OrderItemPK(sale, product);
         this.quantidade = quantidade;
-        this.valorUnitario = produto.getPrecoDeVenda();
+        this.valorUnitario = product.getPrecoDeVenda();
     }
 
     public BigDecimal getSubTotal() {
@@ -45,12 +45,12 @@ public class ItemPedido {
     }
 
     @JsonIgnore // evita o looping de chamados durante a serialização do Json
-    public Venda getVenda() {
-        return id.getVenda();
+    public Sale getVenda() {
+        return id.getSale();
     }
 
-    public Produto getProduto() {
-        return id.getProduto();
+    public Product getProduto() {
+        return id.getProduct();
     }
 
     public void atualizarQuantidade(int quantidade) {
@@ -72,7 +72,7 @@ public class ItemPedido {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        ItemPedido that = (ItemPedido) o;
+        OrderItem that = (OrderItem) o;
         return Objects.equals(id, that.id);
     }
 

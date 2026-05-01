@@ -15,40 +15,38 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "fornecedores")
-public class Fornecedor implements Serializable {
+@Table(name = "categorias")
+public class Category implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_fornecedor")
+    @Column(name = "id_categoria")
     private Long id;
 
-    @Column(nullable = false)
-    private String nome;
-
     @Column
-    private String contato;
+    private String name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "fornecedores")
-    private Set<Produto> produtos = new HashSet<>();
+    @ManyToMany(mappedBy = "categorias")
+    private Set<Product> products = new HashSet<>();
 
-    public Fornecedor() {}
-
-    public Fornecedor(Long id, String nome, String contato) {
-        this.id = id;
-        this.nome = nome;
-        this.contato = contato;
+    public Category() {
     }
+
+    public Category(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Fornecedor that = (Fornecedor) o;
-        return Objects.equals(id, that.id);
+        Category category = (Category) o;
+        return Objects.equals(id, category.id);
     }
 
     @Override
