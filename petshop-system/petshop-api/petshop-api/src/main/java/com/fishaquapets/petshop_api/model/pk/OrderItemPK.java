@@ -42,4 +42,3 @@ public class OrderItemPK implements Serializable {
         return Objects.hash(sale, product);
     }
 }
-

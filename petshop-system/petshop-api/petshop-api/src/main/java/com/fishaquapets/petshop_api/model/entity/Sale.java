@@ -1,16 +1,13 @@
 package com.fishaquapets.petshop_api.model.entity;
 
-import com.fishaquapets.petshop_api.model.enums.PaymentStatus;
 import com.fishaquapets.petshop_api.model.enums.PaymentMethod;
+import com.fishaquapets.petshop_api.model.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,34 +16,17 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "vendas")
-public class Sale implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class Sale extends FinancialTransaction {
     @Setter(AccessLevel.NONE)
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_venda")
-    private Long id;
-
-    @Column(name = "estado_pagamento", nullable = false)
-    private PaymentStatus paymentStatus;
-
-    @Column(name = "valor_total", nullable = false)
-    private BigDecimal valorTotal;
-
-    @Column(name = "metodo_pagamento", nullable = false)
-    private PaymentMethod paymentMethod;
-
-    @Column
-    private BigDecimal pagamento;
-
-    @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "id.sale")
+    @OneToMany(
+            mappedBy = "id.sale",
+            cascade = CascadeType.ALL, // Diz para o JPA que, se salvar Venda, salve os Itens também
+            orphanRemoval = true
+            // Diz que, se o item for removido a Venda (ficar órfão),
+            // ele deve ser apagado do banco - programadores e suas nomenclaturas kkkkkkkkkk
+    )
     private Set<OrderItem> itens = new HashSet<>();
 
-    @Setter(AccessLevel.NONE)
-    private List<String> comentarios = new ArrayList<>();
 
 
     public Sale() {}
@@ -55,11 +35,8 @@ public class Sale implements Serializable {
             Long id, PaymentStatus paymentStatus,
             PaymentMethod paymentMethod, BigDecimal pagamento, List<String> comentarios
     ) {
-        this.id = id;
-        this.paymentStatus = paymentStatus;
-        this.paymentMethod = paymentMethod;
-        this.pagamento = pagamento;
-        this.comentarios = comentarios;
+        super(id, paymentStatus, paymentMethod, pagamento, comentarios);
+
         calcularValorTotal();
     }
 
@@ -82,9 +59,5 @@ public class Sale implements Serializable {
 
     public void removeItem(OrderItem orderItem) {
         this.itens.remove(orderItem);
-    }
-
-    public void addComentario(String comentario) {
-        this.comentarios.add(comentario);
     }
 }
