@@ -1,5 +1,6 @@
 package com.fishaquapets.petshop_api.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fishaquapets.petshop_api.model.enums.PaymentStatus;
 import com.fishaquapets.petshop_api.model.enums.PaymentMethod;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +33,10 @@ public abstract class FinancialTransaction implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "transaction_id")
     private Long id;
+
+    @Column(name = "data_registro", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ", timezone = "GMT")
+    private Instant registrationDateTime;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_pagamento", nullable = false)
@@ -59,12 +65,14 @@ public abstract class FinancialTransaction implements Serializable {
 
     public FinancialTransaction(
             Long id,
+            Instant dateTime,
             PaymentStatus paymentStatus,
             PaymentMethod paymentMethod,
             BigDecimal pagamento,
             List<String> comentarios
     ) {
         this.id = id;
+        this.registrationDateTime = dateTime;
         this.paymentStatus = paymentStatus;
         this.paymentMethod = paymentMethod;
         this.pagamento = pagamento;

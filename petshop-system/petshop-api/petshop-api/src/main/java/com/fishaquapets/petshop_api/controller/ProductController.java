@@ -17,6 +17,7 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    // MAPEAMENTO DAS ROTAS DE GET
     // Classe de testes, não diagramar
     @GetMapping(value = "/todos")
     public ResponseEntity<List<Product>> findAll() {
@@ -28,12 +29,16 @@ public class ProductController {
     public ResponseEntity<Product> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(productService.findById(id));
     }
+    /*
+    Faltam:
+        - Buscar os mais recentes por quantidade
 
-    // Buscar os mais recentes por quantidade
+        - Busca por categoria
 
-    // Busca por categoria
+        - Busca por fornecedor
 
-    // Busca por fornecedor
+        - Busca por nome/palavras-chave (retorna uma lista com produtos que tenham partes compatíveis com as string)
+    */
 
-    // Busca por nome/palavras-chave (retorna uma lista com produtos que tenham partes compatíveis com as string)
+    // MAPEAMENTO DAS ROTAS DE SET
 }
