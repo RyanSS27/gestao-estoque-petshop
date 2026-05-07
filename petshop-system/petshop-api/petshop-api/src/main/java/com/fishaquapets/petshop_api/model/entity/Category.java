@@ -1,6 +1,7 @@
 package com.fishaquapets.petshop_api.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fishaquapets.petshop_api.model.enums.CategoryType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,16 +30,20 @@ public class Category implements Serializable {
     @Column
     private String name;
 
+    // Adicionar ao construtor
+    @Enumerated(EnumType.STRING)
+    private CategoryType categoryType;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
 
-    public Category() {
-    }
+    public Category() {}
 
-    public Category(Long id, String name) {
+    public Category(Long id, String name, CategoryType categoryType) {
         this.id = id;
         this.name = name;
+        this.categoryType = categoryType;
     }
 
 

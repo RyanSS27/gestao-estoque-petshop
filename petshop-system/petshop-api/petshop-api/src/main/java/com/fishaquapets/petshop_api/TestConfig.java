@@ -4,6 +4,7 @@ import com.fishaquapets.petshop_api.model.entity.Category;
 import com.fishaquapets.petshop_api.model.entity.Supplier;
 import com.fishaquapets.petshop_api.model.entity.Product;
 import com.fishaquapets.petshop_api.model.entity.Sale;
+import com.fishaquapets.petshop_api.model.enums.CategoryType;
 import com.fishaquapets.petshop_api.model.enums.PaymentStatus;
 import com.fishaquapets.petshop_api.model.enums.PaymentMethod;
 import com.fishaquapets.petshop_api.repository.*;
@@ -32,11 +33,11 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Categorias
-        Category c1 = new Category(null, "Alimentos");
-        Category c2 = new Category(null, "Acessórios");
-        Category c3 = new Category(null, "Higiene");
-        Category c4 = new Category(null, "Peixes");
-        Category c5 = new Category(null, "Aquarismo");
+        Category c1 = new Category(null, "Alimentos", CategoryType.PRODUCT);
+        Category c2 = new Category(null, "Acessórios", CategoryType.PRODUCT);
+        Category c3 = new Category(null, "Higiene", CategoryType.PRODUCT);
+        Category c4 = new Category(null, "Peixes", CategoryType.PRODUCT);
+        Category c5 = new Category(null, "Aquarismo", CategoryType.PRODUCT);
         categoryRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5));
 
         // Fornecedores

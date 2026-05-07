@@ -35,7 +35,7 @@ public class Sale extends FinancialTransaction {
             Long id, PaymentStatus paymentStatus,
             PaymentMethod paymentMethod, BigDecimal pagamento, List<String> comentarios
     ) {
-        super(id, paymentStatus, paymentMethod, pagamento, comentarios);
+        super(id, paymentStatus, paymentMethod, pagamento, comentarios); // ajustar comentários
 
         calcularValorTotal();
     }
