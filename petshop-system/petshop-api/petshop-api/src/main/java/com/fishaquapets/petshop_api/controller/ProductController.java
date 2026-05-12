@@ -31,19 +31,46 @@ public class ProductController {
     }
 
     // BUSCA POR QUANTIDADE
-    // Buscar os mais recentes por quantidade
+    // Buscar os adicionados/alterados recentemente por quantidade
     @GetMapping(value = "/quantity/{quantity}")
     public ResponseEntity<List<ProductResumeDTO>> findByQuantity(@PathVariable int quantity) {
         return ResponseEntity.ok().body(productService.findByQuantity(quantity));
     }
+
+    // BUSCA POR CATEGORIA
+    // Buscar por categoria
+    @GetMapping(value = "/category/{category}")
+    public ResponseEntity<List<ProductResumeDTO>> findByCategory(@PathVariable String category) {
+        return ResponseEntity.ok().body(productService.findByCategory(category));
+    }
+    // sobrecarga do busca por Id
+    public ResponseEntity<List<ProductResumeDTO>> findByCategory(@PathVariable Long categoryId) {
+        return ResponseEntity.ok().body(productService.findByCategory(categoryId));
+    }
+
+
+
+    // >> FUNÇÕES AINDA SEM LÓGICA POR TRÁS <<
+
+
+    // BUSCA POR FORNECEDOR
+    // Buscar por fornecedor
+    @GetMapping(value = "/supplier/{supplier}")
+    public ResponseEntity<List<ProductResumeDTO>> findBySupplier(@PathVariable String supplier) {
+        return ResponseEntity.ok().body(productService.findBySupplier(supplier));
+    }
+    // sobrecarga de busca por Id
+    public ResponseEntity<List<ProductResumeDTO>> findBySupplier(@PathVariable Long supplier) {
+        return ResponseEntity.ok().body(productService.findBySupplier(supplier));
+    }
+
+    // BUSCA POR NOME / PALAVRAS-CHAVE
+    // Retorna os produtos com trechos de nomes compatíveis
+    public ResponseEntity<List<ProductResumeDTO>> findByKeyWords(@PathVariable String keyWords) {
+        return ResponseEntity.ok().body(productService.findByKeyWords(keyWords));
+    }
     /*
     Faltam:
-        - Buscar os mais recentes por quantidade
-
-        - Busca por categoria
-
-        - Busca por fornecedor
-
         - Busca por nome/palavras-chave (retorna uma lista com produtos que tenham partes compatíveis com as string)
     */
 

@@ -16,9 +16,12 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    private static final int limitPerRequest = 25;
+
+    
     public List<ProductResumeDTO> findByQuantity(int quantity) {
-        // Coloque um freio na quantidade de requisições por vez
-        if (quantity > 25) quantity = 25;
+        // Coloquei um freio na quantidade de requisições por vez
+        if (quantity > limitPerRequest) quantity = limitPerRequest;
 
 
         // Criamos um pedido para a primeira página (0) com o tamanho desejado
@@ -34,5 +37,29 @@ public class ProductService {
         Product p = productRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Usuário não encontrado"));;
         return new ProductDTO(p);
+    }
+
+    // Implementar a lógica das requisições:
+    public List<ProductResumeDTO> findByCategory(String category) {
+        // Falta a lógica
+        return null;
+    }
+
+    public List<ProductResumeDTO> findByCategory(Long category) {
+        // Falta a lógica
+        return null;
+    }
+
+    public List<ProductResumeDTO> findBySupplier(String supplier) {
+        return null;
+    }
+
+    public List<ProductResumeDTO> findBySupplier(Long supplier) {
+        return null;
+    }
+
+    public List<ProductResumeDTO> findByKeyWords(String keyWords) {
+        // Falta a lógica
+        return null;
     }
 }
