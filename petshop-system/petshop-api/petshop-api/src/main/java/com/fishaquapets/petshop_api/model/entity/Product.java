@@ -9,6 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -35,10 +36,13 @@ public class Product implements Serializable {
     private String descricao;
     private int quantidade;
 
+    @Column(name = "data_atualizacao", nullable = false)
+    private Instant updateDate;
+
     @Column(name = "porcentagem_desconto")
     private BigDecimal porcentagemDesconto; // 0-100
 
-    @Column(name = "preco_de_venda")
+    @Column(name = "preco_de_venda", nullable = false)
     private BigDecimal precoDeVenda;
 
     @Setter(AccessLevel.NONE)
@@ -63,10 +67,20 @@ public class Product implements Serializable {
 
     public Product() {}
 
-    public Product(Long id, String nome, BigDecimal preco, String descricao, BigDecimal porcentagemDesconto) {
+    public Product(
+            Long id,
+            String nome,
+            BigDecimal preco,
+            int quantidade,
+            Instant updateDate,
+            String descricao,
+            BigDecimal porcentagemDesconto
+    ) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
+        this.quantidade = quantidade;
+        this.updateDate = updateDate;
         this.descricao = descricao;
         this.porcentagemDesconto = porcentagemDesconto;
 

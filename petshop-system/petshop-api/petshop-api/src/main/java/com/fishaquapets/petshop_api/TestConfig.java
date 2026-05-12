@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Arrays;
 
 @Configuration
@@ -49,27 +50,28 @@ public class TestConfig implements CommandLineRunner {
 
         // Produtos
         Product p1 = new Product(null, "Ração Premium 15kg", new BigDecimal("250.00"),
-                "Ração de alta qualidade para cães adultos", new BigDecimal("10.00"));
+                50, Instant.parse("2026-01-10T08:30:00Z"), "Ração de alta qualidade para cães adultos", new BigDecimal("10.00"));
 
         Product p2 = new Product(null, "Shampoo Pet suave", new BigDecimal("45.00"),
-                "Shampoo hipoalergênico", BigDecimal.ZERO);
+                100, Instant.parse("2026-02-15T10:00:00Z"), "Shampoo hipoalergênico", BigDecimal.ZERO);
 
         Product p3 = new Product(null, "Coleira de Couro", new BigDecimal("80.00"),
-                "Coleira resistente tamanho G", new BigDecimal("5.00"));
+                30, Instant.parse("2026-03-05T14:20:00Z"), "Coleira resistente tamanho G", new BigDecimal("5.00"));
+
         Product p4 = new Product(null, "Aquário 20L Básico", new BigDecimal("150.00"),
-                "Aquário de vidro simples com tampa", new BigDecimal("5.00"));
+                15, Instant.parse("2026-03-20T09:45:00Z"), "Aquário de vidro simples com tampa", new BigDecimal("5.00"));
 
         Product p5 = new Product(null, "Aquário 100L Profissional", new BigDecimal("850.00"),
-                "Vidro extra clear com acabamento em silicone preto", new BigDecimal("10.00"));
+                5, Instant.parse("2026-04-02T11:30:00Z"), "Vidro extra clear com acabamento em silicone preto", new BigDecimal("10.00"));
 
         Product p6 = new Product(null, "Filtro Externo Hang-on 300L/H", new BigDecimal("120.00"),
-                "Filtragem química, física e biológica", BigDecimal.ZERO);
+                25, Instant.parse("2026-04-10T16:00:00Z"), "Filtragem química, física e biológica", BigDecimal.ZERO);
 
         Product p7 = new Product(null, "Termostato 50W", new BigDecimal("85.00"),
-                "Aquecedor automático com regulagem", new BigDecimal("15.00"));
+                40, Instant.parse("2026-05-01T13:15:00Z"), "Aquecedor automático com regulagem", new BigDecimal("15.00"));
 
         Product p8 = new Product(null, "Luminária LED RGB 40cm", new BigDecimal("210.00"),
-                "Iluminação potente para plantas naturais", new BigDecimal("8.00"));
+                12, Instant.parse("2026-05-12T10:30:00Z"), "Iluminação potente para plantas naturais", new BigDecimal("8.00"));
 
         // Associando
         p1.addCategoria(c1);
@@ -101,13 +103,13 @@ public class TestConfig implements CommandLineRunner {
 
         // Vendas
         // Venda 1: Pagamento integral via PIX
-        Sale v1 = new Sale(null, PaymentStatus.PAGA, PaymentMethod.PIX, new BigDecimal("225.00"), Arrays.asList("Entrega realizada na portaria"));
+        Sale v1 = new Sale(null, Instant.parse("2026-01-05T09:15:00Z"), PaymentStatus.PAGA, PaymentMethod.PIX, new BigDecimal("225.00"), Arrays.asList("Entrega realizada na portaria"));
         v1.addItem(p1, 1);
         saleRepository.save(v1);
         orderItemRepository.saveAll(v1.getItens());
 
         // Venda 2: Pagou apenas uma parte do aquário e acessórios no cartão de crédito
-        Sale v2 = new Sale(null, PaymentStatus.PAGAMENTO_PARCIAL, PaymentMethod.CARTAO_CREDITO, new BigDecimal("500.00"), Arrays.asList("Cliente solicitará instalação posterior"));
+        Sale v2 = new Sale(null, Instant.parse("2026-01-10T14:30:00Z"), PaymentStatus.PAGAMENTO_PARCIAL, PaymentMethod.CARTAO_CREDITO, new BigDecimal("500.00"), Arrays.asList("Cliente solicitará instalação posterior"));
         v2.addItem(p5, 1);
         v2.addItem(p6, 1);
         v2.addItem(p7, 1);
@@ -115,14 +117,14 @@ public class TestConfig implements CommandLineRunner {
         orderItemRepository.saveAll(v2.getItens());
 
         // Venda 3: Venda pendente em dinheiro para retirada futura
-        Sale v3 = new Sale(null, PaymentStatus.PENDENTE, PaymentMethod.DINHEIRO, BigDecimal.ZERO, Arrays.asList("Aguardando retirada em loja"));
+        Sale v3 = new Sale(null, Instant.parse("2026-02-15T11:00:00Z"), PaymentStatus.PENDENTE, PaymentMethod.DINHEIRO, BigDecimal.ZERO, Arrays.asList("Aguardando retirada em loja"));
         v3.addItem(p4, 1);
         v3.addItem(p2, 2);
         saleRepository.save(v3);
         orderItemRepository.saveAll(v3.getItens());
 
         // Venda 4: Venda paga no débito com múltiplos itens pequenos
-        Sale v4 = new Sale(null, PaymentStatus.PAGA, PaymentMethod.CARTAO_DEBITO, new BigDecimal("121.00"), Arrays.asList("Cliente utilizou sacola própria"));
+        Sale v4 = new Sale(null, Instant.parse("2026-03-02T17:45:00Z"), PaymentStatus.PAGA, PaymentMethod.CARTAO_DEBITO, new BigDecimal("121.00"), Arrays.asList("Cliente utilizou sacola própria"));
         v4.addItem(p3, 1);
         v4.addItem(p2, 1);
         saleRepository.save(v4);
@@ -132,7 +134,7 @@ public class TestConfig implements CommandLineRunner {
         // -------------------------------------------------------------------------
         // VENDA 5: Venda de Kit de Aquarismo Completo (Grande Quantidade)
         // -------------------------------------------------------------------------
-        Sale v5 = new Sale(null, PaymentStatus.PAGA, PaymentMethod.CARTAO_DEBITO,
+        Sale v5 = new Sale(null, Instant.parse("2026-03-20T10:20:00Z"), PaymentStatus.PAGA, PaymentMethod.CARTAO_DEBITO,
                 new BigDecimal("415.00"),
                 Arrays.asList("Venda de kit iniciante", "Cliente solicitou teste de água"));
         v5.addItem(p4, 1); // Aquário
@@ -145,7 +147,7 @@ public class TestConfig implements CommandLineRunner {
         // -------------------------------------------------------------------------
         // VENDA 6: Venda ESTORNADA (Devolução de produto)
         // -------------------------------------------------------------------------
-        Sale v6 = new Sale(null, PaymentStatus.ESTORNADA, PaymentMethod.CARTAO_CREDITO,
+        Sale v6 = new Sale(null, Instant.parse("2026-04-05T15:10:00Z"), PaymentStatus.ESTORNADA, PaymentMethod.CARTAO_CREDITO,
                 BigDecimal.ZERO,
                 Arrays.asList("Produto devolvido por incompatibilidade", "Estorno processado no cartão"));
         v6.addItem(p3, 2); // 2 Coleiras
@@ -155,7 +157,7 @@ public class TestConfig implements CommandLineRunner {
         // -------------------------------------------------------------------------
         // VENDA 7: Venda de Alto Volume (Estoque de Ração)
         // -------------------------------------------------------------------------
-        Sale v7 = new Sale(null, PaymentStatus.PAGA, PaymentMethod.PIX,
+        Sale v7 = new Sale(null, Instant.parse("2026-05-10T13:00:00Z"), PaymentStatus.PAGA, PaymentMethod.PIX,
                 new BigDecimal("1125.00"),
                 Arrays.asList("Venda para ONG de proteção animal", "Desconto adicional aplicado via cupom"));
         v7.addItem(p1, 5); // 5 sacos de ração premium
@@ -165,7 +167,7 @@ public class TestConfig implements CommandLineRunner {
         // -------------------------------------------------------------------------
         // VENDA 8: Pagamento Parcial com múltiplos itens de higiene
         // -------------------------------------------------------------------------
-        Sale v8 = new Sale(null, PaymentStatus.PAGAMENTO_PARCIAL, PaymentMethod.DINHEIRO,
+        Sale v8 = new Sale(null, Instant.parse("2026-05-12T08:50:00Z"), PaymentStatus.PAGAMENTO_PARCIAL, PaymentMethod.DINHEIRO,
                 new BigDecimal("50.00"),
                 Arrays.asList("Cliente pagou parte em dinheiro", "Restante será pago na retirada"));
         v8.addItem(p2, 4); // 4 Shampoos

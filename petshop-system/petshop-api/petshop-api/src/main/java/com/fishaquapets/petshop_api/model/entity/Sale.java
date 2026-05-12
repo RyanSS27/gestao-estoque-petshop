@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,10 +33,14 @@ public class Sale extends FinancialTransaction {
     public Sale() {}
 
     public Sale(
-            Long id, PaymentStatus paymentStatus,
-            PaymentMethod paymentMethod, BigDecimal pagamento, List<String> comentarios
+            Long id,
+            Instant dateTime,
+            PaymentStatus paymentStatus,
+            PaymentMethod paymentMethod,
+            BigDecimal pagamento,
+            List<String> comentarios
     ) {
-        super(id, paymentStatus, paymentMethod, pagamento, comentarios); // ajustar comentários
+        super(id, dateTime, paymentStatus, paymentMethod, pagamento, comentarios); // ajustar comentários
 
         calcularValorTotal();
     }

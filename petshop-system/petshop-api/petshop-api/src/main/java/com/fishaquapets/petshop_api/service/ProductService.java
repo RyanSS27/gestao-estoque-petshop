@@ -1,12 +1,15 @@
 package com.fishaquapets.petshop_api.service;
 
+import com.fishaquapets.petshop_api.dto.product.ProductDTO;
+import com.fishaquapets.petshop_api.dto.product.ProductResumeDTO;
 import com.fishaquapets.petshop_api.model.entity.Product;
 import com.fishaquapets.petshop_api.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -14,12 +17,23 @@ public class ProductService {
     ProductRepository productRepository;
 
     // Classe de testes, não diagramar
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<ProductResumeDTO> findByQuantity(int quantity) {
+        // Coloque um freio na quantidade de requisições por vez
+        if (quantity > 25) quantity = 25;
+
+        
+        // Criamos um pedido para a primeira página (0) com o tamanho desejado
+        Pageable topN = PageRequest.of(0, quantity);
+
+        return productRepository.findAllByOrderByUpdateDateDesc(topN)
+                .stream()
+                .map(ProductResumeDTO::new) // Assume que o DTO tem um construtor que recebe a Entity e converte
+                .toList();
     }
 
-    public Product findById(Long id) {
-        Optional<Product> objeto = productRepository.findById(id);
-        return objeto.get();
+    public ProductDTO findById(Long id) {
+        Product p = productRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Usuário não encontrado"));;
+        return new ProductDTO(p);
     }
 }

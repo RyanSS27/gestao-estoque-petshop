@@ -76,7 +76,7 @@ public abstract class FinancialTransaction implements Serializable {
         this.paymentStatus = paymentStatus;
         this.paymentMethod = paymentMethod;
         this.pagamento = pagamento;
-        if (comentarios != null) this.comentarios = comentarios;
+        this.comentarios = comentarios;
     }
 
     public void addComentario(String comentario) {

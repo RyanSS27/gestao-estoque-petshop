@@ -1,6 +1,7 @@
 package com.fishaquapets.petshop_api.controller;
 
-import com.fishaquapets.petshop_api.model.entity.Product;
+import com.fishaquapets.petshop_api.dto.product.ProductDTO;
+import com.fishaquapets.petshop_api.dto.product.ProductResumeDTO;
 import com.fishaquapets.petshop_api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +20,21 @@ public class ProductController {
 
     // MAPEAMENTO DAS ROTAS DE GET
     // Classe de testes, não diagramar
-    @GetMapping(value = "/todos")
-    public ResponseEntity<List<Product>> findAll() {
-        return ResponseEntity.ok().body(productService.findAll());
+    // @GetMapping(value = "/todos")
+    // public ResponseEntity<List<ProductDTO>> findAll() { return ResponseEntity.ok().body(productService.findAll()); }
+
+    // BUSCA POR ID
+    // Retorna todas as informações do produto
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(productService.findById(id));
     }
 
-    // Busca por id
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Product> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(productService.findById(id));
+    // BUSCA POR QUANTIDADE
+    // Buscar os mais recentes por quantidade
+    @GetMapping(value = "/quantity/{quantity}")
+    public ResponseEntity<List<ProductResumeDTO>> findByQuantity(@PathVariable int quantity) {
+        return ResponseEntity.ok().body(productService.findByQuantity(quantity));
     }
     /*
     Faltam:
