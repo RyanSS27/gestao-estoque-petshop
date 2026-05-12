@@ -16,12 +16,11 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    // Classe de testes, não diagramar
     public List<ProductResumeDTO> findByQuantity(int quantity) {
         // Coloque um freio na quantidade de requisições por vez
         if (quantity > 25) quantity = 25;
 
-        
+
         // Criamos um pedido para a primeira página (0) com o tamanho desejado
         Pageable topN = PageRequest.of(0, quantity);
 
