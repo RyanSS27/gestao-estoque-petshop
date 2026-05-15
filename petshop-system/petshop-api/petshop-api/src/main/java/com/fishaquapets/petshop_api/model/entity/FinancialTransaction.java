@@ -47,10 +47,10 @@ public abstract class FinancialTransaction implements Serializable {
     private PaymentMethod paymentMethod;
 
     @Column(name = "valor_total", nullable = false)
-    protected BigDecimal valorTotal = BigDecimal.ZERO;
+    protected BigDecimal totalValue = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal pagamento;
+    private BigDecimal payment;
 
     @Setter(AccessLevel.NONE)
     @ElementCollection // faz com que crie uma tabela auxiliar para guardar os comentários
@@ -59,7 +59,7 @@ public abstract class FinancialTransaction implements Serializable {
             joinColumns = @JoinColumn(name = "id_transaction")
     )
     @Column(name = "comentario")
-    private List<String> comentarios = new ArrayList<>();
+    private List<String> comments = new ArrayList<>();
 
     public FinancialTransaction() {}
 
@@ -68,23 +68,23 @@ public abstract class FinancialTransaction implements Serializable {
             Instant dateTime,
             PaymentStatus paymentStatus,
             PaymentMethod paymentMethod,
-            BigDecimal pagamento,
-            List<String> comentarios
+            BigDecimal payment,
+            List<String> comments
     ) {
         this.id = id;
         this.registrationDateTime = dateTime;
         this.paymentStatus = paymentStatus;
         this.paymentMethod = paymentMethod;
-        this.pagamento = pagamento;
-        this.comentarios = comentarios;
+        this.payment = payment;
+        this.comments = comments;
     }
 
     public void addComentario(String comentario) {
-        this.comentarios.add(comentario);
+        this.comments.add(comentario);
     }
 
     // Retorna uma view imutável protegendo a referência original (Effective Java)
     public List<String> getComentarios() {
-        return Collections.unmodifiableList(comentarios);
+        return Collections.unmodifiableList(comments);
     }
 }

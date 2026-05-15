@@ -46,7 +46,7 @@ public class Sale extends FinancialTransaction {
     }
 
     public void calcularValorTotal() {
-        this.valorTotal = itens.stream()
+        this.totalValue = itens.stream()
                 .map(OrderItem::getSubTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }

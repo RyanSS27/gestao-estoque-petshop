@@ -34,18 +34,22 @@ public class SystemUser implements Serializable {
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "senha")
+    @Column(name = "senha", nullable = false)
     private String senha; // procurar como criptografar futuramente
+
+    @Column(name = "url_instagram")
+    private String urlInstagram;
 
     public SystemUser() {}
 
-    public SystemUser(Long id, String name, String company, String phoneNumber, String email, String senha) {
+    public SystemUser(Long id, String name, String company, String phoneNumber, String email, String senha, String urlInstagram) {
         this.id = id;
         this.name = name;
         this.company = company;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.senha = senha;
+        this.urlInstagram = urlInstagram;
     }
 
     @Override
