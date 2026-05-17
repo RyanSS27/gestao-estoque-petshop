@@ -53,7 +53,6 @@ public class OrderItem {
         return id.getProduct();
     }
 
-    @JsonIgnore
     public String getProductName() { return id.getProduct().getNome(); }
 
     public void atualizarQuantidade(int quantidade) {
