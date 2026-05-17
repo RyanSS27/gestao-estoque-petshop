@@ -1,5 +1,6 @@
 package com.fishaquapets.petshop_api.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fishaquapets.petshop_api.model.enums.PaymentMethod;
 import com.fishaquapets.petshop_api.model.enums.PaymentStatus;
 import jakarta.persistence.*;
@@ -64,5 +65,11 @@ public class Sale extends FinancialTransaction {
 
     public void removeItem(OrderItem orderItem) {
         this.itens.remove(orderItem);
+    }
+
+    @JsonIgnore
+    public String getFistItemName() {
+        var item = itens.iterator().next();
+        return item != null ? item.getProductName(): "Produto não identificado";
     }
 }
