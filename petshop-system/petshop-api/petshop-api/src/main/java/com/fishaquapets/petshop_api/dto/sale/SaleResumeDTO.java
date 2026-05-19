@@ -42,5 +42,6 @@ public class SaleResumeDTO {
         this.paymentStatus = sale.getPaymentStatus();
         this.totalValue = sale.getTotalValue();
         this.firstItemName = sale.getFistItemName();
+        this.quantityOfItens = sale.getItens().size();
     }
 }

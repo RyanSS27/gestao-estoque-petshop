@@ -69,10 +69,6 @@ public class ProductController {
     public ResponseEntity<List<ProductResumeDTO>> findByKeyWords(@PathVariable String keyWords) {
         return ResponseEntity.ok().body(productService.findByKeyWords(keyWords));
     }
-    /*
-    Faltam:
-        - Busca por nome/palavras-chave (retorna uma lista com produtos que tenham partes compatíveis com as string)
-    */
 
     // MAPEAMENTO DAS ROTAS DE SET
 }

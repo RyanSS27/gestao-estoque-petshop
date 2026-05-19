@@ -13,8 +13,11 @@ import java.util.*;
 
 @Service
 public class ProductService {
-    @Autowired
-    ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     private static final int limitPerRequest = 25;
 

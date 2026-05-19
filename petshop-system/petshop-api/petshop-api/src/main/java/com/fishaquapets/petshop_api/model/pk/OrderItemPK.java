@@ -30,6 +30,14 @@ public class OrderItemPK implements Serializable {
         this.product = product;
     }
 
+    public Long getProductId() {
+        return product.getId();
+    }
+
+    public Long getSaleId() {
+        return sale.getId();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

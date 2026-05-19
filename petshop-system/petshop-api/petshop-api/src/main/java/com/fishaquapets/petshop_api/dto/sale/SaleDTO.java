@@ -4,13 +4,15 @@ import com.fishaquapets.petshop_api.model.entity.OrderItem;
 import com.fishaquapets.petshop_api.model.entity.Sale;
 import com.fishaquapets.petshop_api.model.enums.PaymentMethod;
 import com.fishaquapets.petshop_api.model.enums.PaymentStatus;
-import org.hibernate.query.Order;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+@Getter
 public class SaleDTO {
     private Instant dateTime;
     private PaymentMethod paymentMethod;
@@ -18,7 +20,7 @@ public class SaleDTO {
     private BigDecimal totalValue;
     private BigDecimal payment;
     private Integer quantityOfItens;
-    private Set<OrderItem> orderItems = new HashSet<>();
+    private Set<OrderItemDTO> orderItemsDTO = new HashSet<>();
 
     public SaleDTO() {}
 
@@ -35,8 +37,12 @@ public class SaleDTO {
         this.paymentStatus = paymentStatus;
         this.totalValue = totalValue;
         this.payment = payment;
-        this.orderItems = orderItems;
-        this.quantityOfItens = this.orderItems.size();
+        if (orderItems != null) {
+            this.orderItemsDTO = orderItems.stream()
+                    .map(OrderItemDTO::new)
+                    .collect(Collectors.toSet());
+        }
+        this.quantityOfItens = this.orderItemsDTO.size();
     }
 
     public SaleDTO(Sale sale) {
@@ -45,7 +51,11 @@ public class SaleDTO {
         this.paymentStatus = sale.getPaymentStatus();
         this.totalValue = sale.getTotalValue();
         this.payment = sale.getPayment();
-        this.orderItems = sale.getItens();
-        this.quantityOfItens = this.orderItems.size();
+        if (sale.getItens() != null) {
+            this.orderItemsDTO = sale.getItens().stream()
+                    .map(OrderItemDTO::new)
+                    .collect(Collectors.toSet());
+        }
+        this.quantityOfItens = this.orderItemsDTO.size();
     }
 }

@@ -1,7 +1,6 @@
 package com.fishaquapets.petshop_api.model.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fishaquapets.petshop_api.model.pk.OrderItemPK;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -23,8 +22,9 @@ public class OrderItem {
     @EmbeddedId // id integrado
     private OrderItemPK id;
 
-    @Column
+    @Column(nullable = false)
     private Integer quantidade;
+
 
     @Column(name = "preco_unitario")
     private BigDecimal valorUnitario;
@@ -44,13 +44,20 @@ public class OrderItem {
         return valorUnitario.multiply(new BigDecimal(quantidade));
     }
 
-    @JsonIgnore // evita o looping de chamados durante a serialização do Json
     public Sale getVenda() {
         return id.getSale();
     }
 
     public Product getProduto() {
         return id.getProduct();
+    }
+
+    public Long getSaleId() {
+        return this.id.getSaleId();
+    }
+
+    public Long getProductId() {
+        return this.id.getProductId();
     }
 
     public String getProductName() { return id.getProduct().getNome(); }
