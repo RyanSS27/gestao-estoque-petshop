@@ -1,11 +1,10 @@
 package com.fishaquapets.petshop_api.service;
 
-import com.fishaquapets.petshop_api.dto.sale.SaleDTO;
-import com.fishaquapets.petshop_api.dto.sale.SaleResumeDTO;
+import com.fishaquapets.petshop_api.dto.financialtransaction.SaleDTO;
+import com.fishaquapets.petshop_api.dto.financialtransaction.SaleResumeDTO;
 import com.fishaquapets.petshop_api.model.entity.Sale;
 import com.fishaquapets.petshop_api.repository.SaleRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

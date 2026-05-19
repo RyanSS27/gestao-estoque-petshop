@@ -1,4 +1,4 @@
-package com.fishaquapets.petshop_api.dto.sale;
+package com.fishaquapets.petshop_api.dto.financialtransaction;
 
 import com.fishaquapets.petshop_api.model.entity.OrderItem;
 import com.fishaquapets.petshop_api.model.entity.Sale;
