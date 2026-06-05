@@ -7,6 +7,7 @@ import com.fishaquapets.petshop_api.model.entity.Sale;
 import com.fishaquapets.petshop_api.model.enums.CategoryType;
 import com.fishaquapets.petshop_api.model.enums.PaymentStatus;
 import com.fishaquapets.petshop_api.model.enums.PaymentMethod;
+import com.fishaquapets.petshop_api.model.enums.SaleType;
 import com.fishaquapets.petshop_api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -102,45 +103,47 @@ public class TestConfig implements CommandLineRunner {
         productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8));
 
         // Vendas
-        // Venda 1: Pagamento integral via PIX
-        Sale v1 = new Sale(null, Instant.parse("2026-01-05T09:15:00Z"), PaymentStatus.PAGA, PaymentMethod.PIX, new BigDecimal("225.00"), Arrays.asList("Entrega realizada na portaria"));
-        v1.addItem(p1, 1);
+        // Venda 1: Pagamento integral via PIX (Sem descontos)
+        Sale v1 = new Sale(null, Instant.parse("2026-01-05T09:15:00Z"), PaymentStatus.PAGA, PaymentMethod.PIX,
+                new BigDecimal("225.00"), Arrays.asList("Entrega realizada na portaria"), SaleType.DELIVERY);
+        v1.addItem(p1, 1, 0);
         saleRepository.save(v1);
         orderItemRepository.saveAll(v1.getItens());
 
-        // Venda 2: Pagou apenas uma parte do aquário e acessórios no cartão de crédito
-        Sale v2 = new Sale(null, Instant.parse("2026-01-10T14:30:00Z"), PaymentStatus.PAGAMENTO_PARCIAL, PaymentMethod.CARTAO_CREDITO, new BigDecimal("500.00"), Arrays.asList("Cliente solicitará instalação posterior"));
-        v2.addItem(p5, 1);
-        v2.addItem(p6, 1);
-        v2.addItem(p7, 1);
+        // Venda 2: Pagou apenas uma parte. Aquário (p5) com 10% de desconto!
+        Sale v2 = new Sale(null, Instant.parse("2026-01-10T14:30:00Z"), PaymentStatus.PAGAMENTO_PARCIAL, PaymentMethod.CARTAO_CREDITO,
+                new BigDecimal("500.00"), Arrays.asList("Cliente solicitará instalação posterior"), SaleType.RESERVATION);
+        v2.addItem(p5, 1, 10); // <-- 10% de desconto APENAS neste item
+        v2.addItem(p6, 1, 0);
+        v2.addItem(p7, 1, 0);
         saleRepository.save(v2);
         orderItemRepository.saveAll(v2.getItens());
 
-        // Venda 3: Venda pendente em dinheiro para retirada futura
-        Sale v3 = new Sale(null, Instant.parse("2026-02-15T11:00:00Z"), PaymentStatus.PENDENTE, PaymentMethod.DINHEIRO, BigDecimal.ZERO, Arrays.asList("Aguardando retirada em loja"));
-        v3.addItem(p4, 1);
-        v3.addItem(p2, 2);
+        // Venda 3: Venda pendente
+        Sale v3 = new Sale(null, Instant.parse("2026-02-15T11:00:00Z"), PaymentStatus.PENDENTE, PaymentMethod.DINHEIRO,
+                BigDecimal.ZERO, Arrays.asList("Aguardando retirada em loja"), SaleType.RESERVATION);
+        v3.addItem(p4, 1, 0);
+        v3.addItem(p2, 2, 0);
         saleRepository.save(v3);
         orderItemRepository.saveAll(v3.getItens());
 
-        // Venda 4: Venda paga no débito com múltiplos itens pequenos
-        Sale v4 = new Sale(null, Instant.parse("2026-03-02T17:45:00Z"), PaymentStatus.PAGA, PaymentMethod.CARTAO_DEBITO, new BigDecimal("121.00"), Arrays.asList("Cliente utilizou sacola própria"));
-        v4.addItem(p3, 1);
-        v4.addItem(p2, 1);
+        // Venda 4: Múltiplos itens
+        Sale v4 = new Sale(null, Instant.parse("2026-03-02T17:45:00Z"), PaymentStatus.PAGA, PaymentMethod.CARTAO_DEBITO,
+                new BigDecimal("121.00"), Arrays.asList("Cliente utilizou sacola própria"), SaleType.COUNTER_SALE);
+        v4.addItem(p3, 1, 0);
+        v4.addItem(p2, 1, 0);
         saleRepository.save(v4);
         orderItemRepository.saveAll(v4.getItens());
 
-        // VENDAS COM CASOS ESPECIAIS
         // -------------------------------------------------------------------------
-        // VENDA 5: Venda de Kit de Aquarismo Completo (Grande Quantidade)
+        // VENDA 5: Luminária (p8) com 20% de desconto (Queima de estoque)
         // -------------------------------------------------------------------------
         Sale v5 = new Sale(null, Instant.parse("2026-03-20T10:20:00Z"), PaymentStatus.PAGA, PaymentMethod.CARTAO_DEBITO,
-                new BigDecimal("415.00"),
-                Arrays.asList("Venda de kit iniciante", "Cliente solicitou teste de água"));
-        v5.addItem(p4, 1); // Aquário
-        v5.addItem(p6, 1); // Filtro
-        v5.addItem(p7, 1); // Termostato
-        v5.addItem(p8, 1); // Luminária
+                new BigDecimal("415.00"), Arrays.asList("Venda de kit iniciante", "Cliente solicitou teste de água"), SaleType.COUNTER_SALE);
+        v5.addItem(p4, 1, 0); // Aquário
+        v5.addItem(p6, 1, 0); // Filtro
+        v5.addItem(p7, 1, 0); // Termostato
+        v5.addItem(p8, 1, 20); // <-- 20% de desconto neste item
         saleRepository.save(v5);
         orderItemRepository.saveAll(v5.getItens());
 
@@ -148,30 +151,30 @@ public class TestConfig implements CommandLineRunner {
         // VENDA 6: Venda ESTORNADA (Devolução de produto)
         // -------------------------------------------------------------------------
         Sale v6 = new Sale(null, Instant.parse("2026-04-05T15:10:00Z"), PaymentStatus.ESTORNADA, PaymentMethod.CARTAO_CREDITO,
-                BigDecimal.ZERO,
-                Arrays.asList("Produto devolvido por incompatibilidade", "Estorno processado no cartão"));
-        v6.addItem(p3, 2); // 2 Coleiras
+                BigDecimal.ZERO, Arrays.asList("Produto devolvido por incompatibilidade", "Estorno processado no cartão"), SaleType.COUNTER_SALE);
+        v6.addItem(p3, 2, 0); // 2 Coleiras
         saleRepository.save(v6);
         orderItemRepository.saveAll(v6.getItens());
 
         // -------------------------------------------------------------------------
-        // VENDA 7: Venda de Alto Volume (Estoque de Ração)
+        // VENDA 7: Venda com 15% de Desconto no TOTAL (Cupom geral)
         // -------------------------------------------------------------------------
         Sale v7 = new Sale(null, Instant.parse("2026-05-10T13:00:00Z"), PaymentStatus.PAGA, PaymentMethod.PIX,
-                new BigDecimal("1125.00"),
-                Arrays.asList("Venda para ONG de proteção animal", "Desconto adicional aplicado via cupom"));
-        v7.addItem(p1, 5); // 5 sacos de ração premium
+                new BigDecimal("1125.00"), Arrays.asList("Venda para ONG de proteção animal", "Desconto adicional aplicado via cupom"), SaleType.DELIVERY);
+
+        v7.setDiscountPercentage(15); // <-- Desconto de 15% aplicado na venda inteira!
+        v7.addItem(p1, 5, 0);
         saleRepository.save(v7);
         orderItemRepository.saveAll(v7.getItens());
 
         // -------------------------------------------------------------------------
-        // VENDA 8: Pagamento Parcial com múltiplos itens de higiene
+        // VENDA 8: Shampoos (p2) com 5% de desconto
         // -------------------------------------------------------------------------
         Sale v8 = new Sale(null, Instant.parse("2026-05-12T08:50:00Z"), PaymentStatus.PAGAMENTO_PARCIAL, PaymentMethod.DINHEIRO,
-                new BigDecimal("50.00"),
-                Arrays.asList("Cliente pagou parte em dinheiro", "Restante será pago na retirada"));
-        v8.addItem(p2, 4); // 4 Shampoos
-        v8.addItem(p3, 1); // 1 Coleira
+                new BigDecimal("50.00"), Arrays.asList("Cliente pagou parte em dinheiro", "Restante será pago na retirada"), SaleType.RESERVATION);
+        v8.addItem(p2, 4, 5); // <-- 5% de desconto nestes shampoos
+        v8.addItem(p3, 1, 0); // Coleira normal
+        v8.setDiscountPercentage(2);
         saleRepository.save(v8);
         orderItemRepository.saveAll(v8.getItens());
 
