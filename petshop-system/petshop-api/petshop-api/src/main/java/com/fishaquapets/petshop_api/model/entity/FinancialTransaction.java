@@ -49,6 +49,15 @@ public abstract class FinancialTransaction implements Serializable {
     @Column(name = "valor_total", nullable = false)
     protected BigDecimal totalValue = BigDecimal.ZERO;
 
+    @Column(name = "desconto_porcentagem", nullable = true)
+    private Integer discountPercentage;
+
+    // Adicionei agora, complete a classe:
+    @Column(name = "sub_total", nullable = true)
+    private BigDecimal subTotal = BigDecimal.ZERO; // sem os descontos
+
+    // preciso adicionar o subtotal da venda sem descontos
+
     @Column
     private BigDecimal payment;
 
@@ -76,7 +85,9 @@ public abstract class FinancialTransaction implements Serializable {
         this.paymentStatus = paymentStatus;
         this.paymentMethod = paymentMethod;
         this.payment = payment;
-        this.comments = comments;
+        if (comments != null) {
+            this.comments.addAll(comments);
+        }
     }
 
     public void addComentario(String comentario) {
