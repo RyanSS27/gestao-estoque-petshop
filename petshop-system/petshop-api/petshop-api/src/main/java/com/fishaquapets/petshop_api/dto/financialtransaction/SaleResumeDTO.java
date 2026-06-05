@@ -22,14 +22,12 @@ public class SaleResumeDTO {
 
     public SaleResumeDTO(
             Instant dateTime,
-            PaymentMethod paymentMethod,
             PaymentStatus paymentStatus,
             BigDecimal totalValue,
             Integer quantityOfItens,
             String firstItemName) {
 
         this.dateTime = dateTime;
-        this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.totalValue = totalValue;
         this.quantityOfItens = quantityOfItens;
@@ -38,7 +36,6 @@ public class SaleResumeDTO {
 
     public SaleResumeDTO(Sale sale) {
         this.dateTime = sale.getRegistrationDateTime();
-        this.paymentMethod = sale.getPaymentMethod();
         this.paymentStatus = sale.getPaymentStatus();
         this.totalValue = sale.getTotalValue();
         this.firstItemName = sale.getFistItemName();
