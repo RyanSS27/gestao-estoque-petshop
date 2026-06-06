@@ -178,6 +178,69 @@ public class TestConfig implements CommandLineRunner {
         saleRepository.save(v8);
         orderItemRepository.saveAll(v8.getItens());
 
+        // -------------------------------------------------------------------------
+        // VENDA 9: Entrega com Frete Aplicado
+        // -------------------------------------------------------------------------
+        Sale v9 = new Sale(null, Instant.parse("2026-06-01T10:00:00Z"), PaymentStatus.PAGA, PaymentMethod.PIX,
+                new BigDecimal("150.00"), Arrays.asList("Deixar na portaria com o zelador"), SaleType.DELIVERY);
+        v9.setFreight(new BigDecimal("15.00")); // <-- Adicionado frete para testar o seu DTO no front-end!
+        v9.addItem(p1, 1, 0); // Ração
+        v9.addItem(p2, 2, 0); // Shampoo
+        saleRepository.save(v9);
+        orderItemRepository.saveAll(v9.getItens());
+
+        // -------------------------------------------------------------------------
+        // VENDA 10: Compra grande de balcão (Cliente VIP com desconto duplo)
+        // -------------------------------------------------------------------------
+        Sale v10 = new Sale(null, Instant.parse("2026-06-02T14:20:00Z"), PaymentStatus.PAGA, PaymentMethod.CARTAO_CREDITO,
+                new BigDecimal("300.00"), Arrays.asList("Cliente VIP, aplicou desconto em itens e na compra total"), SaleType.COUNTER_SALE);
+        v10.setDiscountPercentage(5); // 5% de desconto na venda toda
+        v10.addItem(p3, 2, 10); // 10% de desconto APENAS nestas coleiras
+        v10.addItem(p8, 1, 15); // 15% de desconto nesta luminária
+        saleRepository.save(v10);
+        orderItemRepository.saveAll(v10.getItens());
+
+        // -------------------------------------------------------------------------
+        // VENDA 11: Reserva pendente (Cliente ligou pedindo para guardar)
+        // -------------------------------------------------------------------------
+        Sale v11 = new Sale(null, Instant.parse("2026-06-03T09:30:00Z"), PaymentStatus.PENDENTE, PaymentMethod.DINHEIRO,
+                BigDecimal.ZERO, Arrays.asList("Cliente passa para buscar amanhã à tarde"), SaleType.RESERVATION);
+        v11.addItem(p1, 2, 0);
+        v11.addItem(p3, 1, 0);
+        saleRepository.save(v11);
+        orderItemRepository.saveAll(v11.getItens());
+
+        // -------------------------------------------------------------------------
+        // VENDA 12: Pagamento Parcial no Balcão (Faltou dinheiro)
+        // -------------------------------------------------------------------------
+        Sale v12 = new Sale(null, Instant.parse("2026-06-04T16:45:00Z"), PaymentStatus.PAGAMENTO_PARCIAL, PaymentMethod.DINHEIRO,
+                new BigDecimal("100.00"), Arrays.asList("Faltou 20 reais, cliente é de confiança e traz amanhã"), SaleType.COUNTER_SALE);
+        v12.addItem(p4, 1, 0); // Aquário
+        saleRepository.save(v12);
+        orderItemRepository.saveAll(v12.getItens());
+
+        // -------------------------------------------------------------------------
+        // VENDA 13: Delivery estornado antes de sair para entrega
+        // -------------------------------------------------------------------------
+        Sale v13 = new Sale(null, Instant.parse("2026-06-05T11:15:00Z"), PaymentStatus.ESTORNADA, PaymentMethod.PIX,
+                BigDecimal.ZERO, Arrays.asList("Cliente cancelou pelo WhatsApp antes do motoboy sair"), SaleType.DELIVERY);
+        v13.setFreight(new BigDecimal("10.00")); // Tinha frete lançado, mas a venda foi estornada
+        v13.addItem(p1, 1, 0);
+        saleRepository.save(v13);
+        orderItemRepository.saveAll(v13.getItens());
+
+        // -------------------------------------------------------------------------
+        // VENDA 14: Aquarismo avançado (Promoção geral de 20%)
+        // -------------------------------------------------------------------------
+        Sale v14 = new Sale(null, Instant.parse("2026-06-05T18:00:00Z"), PaymentStatus.PAGA, PaymentMethod.CARTAO_DEBITO,
+                new BigDecimal("600.00"), Arrays.asList("Promoção semana do aquarismo"), SaleType.COUNTER_SALE);
+        v14.setDiscountPercentage(20); // 20% no total
+        v14.addItem(p5, 2, 0);
+        v14.addItem(p6, 2, 0);
+        v14.addItem(p7, 2, 0);
+        saleRepository.save(v14);
+        orderItemRepository.saveAll(v14.getItens());
+
         System.out.println("Seeding realizado com sucesso!");
     }
 
