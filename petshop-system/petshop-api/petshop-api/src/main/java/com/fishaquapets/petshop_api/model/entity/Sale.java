@@ -57,10 +57,13 @@ public class Sale extends FinancialTransaction {
 
     public void calculateTotalValue() {
         BigDecimal totalItens = itens.stream()
-                .map(OrderItem::getTotalItemValue)
+                .map(OrderItem::getTotalItemValue) // transforma em uma lista de BigDecimal apenas com os valores
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+        // inicia com 0 e vai adicionando os demais valores da list
+        // .reduce() funciona como um "for" sem variável adicional "n++"
 
-        // Define o subtotal (soma dos itens com seus próprios descontos, mas sem o desconto da venda e sem frete)
+        // Calcula o subtotal (soma dos itens com seus próprios descontos, mas sem o desconto da venda e sem frete)
+        // dizendo que deve haver 2 casas decimais, arredondando para cima (7.545, vira 7.55)
         this.setSubTotal(totalItens.setScale(2, RoundingMode.HALF_UP));
 
         // Verifica se existe desconto a ser aplicado na venda inteira

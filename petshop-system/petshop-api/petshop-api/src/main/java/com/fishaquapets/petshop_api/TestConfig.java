@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Profile;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.HashSet;
 
 @Configuration
 @Profile("test")
@@ -34,47 +35,108 @@ public class TestConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Categorias
+        // CATEGORIAS
         Category c1 = new Category(null, "Alimentos", CategoryType.PRODUCT);
         Category c2 = new Category(null, "Acessórios", CategoryType.PRODUCT);
         Category c3 = new Category(null, "Higiene", CategoryType.PRODUCT);
         Category c4 = new Category(null, "Peixes", CategoryType.PRODUCT);
         Category c5 = new Category(null, "Aquarismo", CategoryType.PRODUCT);
-        categoryRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5));
 
-        // Fornecedores
+        // Novas Categorias Adicionadas
+        Category c6 = new Category(null, "Farmácia", CategoryType.PRODUCT);
+        Category c7 = new Category(null, "Brinquedos", CategoryType.PRODUCT);
+        Category c8 = new Category(null, "Roupas", CategoryType.PRODUCT);
+        Category c9 = new Category(null, "Aves", CategoryType.PRODUCT);
+
+        categoryRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9));
+
+        // FORNECEDORES
         Supplier f1 = new Supplier(null, "PetDistribuidora S.A.", "contato@petdist.com");
         Supplier f2 = new Supplier(null, "MegaPet Atacado", "vendas@megapet.com");
         Supplier f3 = new Supplier(null, "Aquários Brasil Ltda.", "contato@aquabrasil.com");
         Supplier f4 = new Supplier(null, "OceanTech", "suporte@oceantech.com");
-        supplierRepository.saveAll(Arrays.asList(f1, f2, f3, f4));
+        Supplier f5 = new Supplier(null, "PharmaPet Vet", "vendas@pharmapet.com");
+        Supplier f6 = new Supplier(null, "PiuPiu Distribuidora", "aves@piupiu.com");
+        Supplier f7 = new Supplier(null, "Boutique Animal", "moda@boutiqueanimal.com");
+        Supplier f8 = new Supplier(null, "FunPet Toys", "comercial@funpettoys.com");
 
-        // Produtos
-        Product p1 = new Product(null, "Ração Premium 15kg", new BigDecimal("250.00"),
-                50, Instant.parse("2026-01-10T08:30:00Z"), "Ração de alta qualidade para cães adultos", new BigDecimal("10.00"));
+        supplierRepository.saveAll(Arrays.asList(f1, f2, f3, f4, f5, f6, f7, f8));
 
-        Product p2 = new Product(null, "Shampoo Pet suave", new BigDecimal("45.00"),
-                100, Instant.parse("2026-02-15T10:00:00Z"), "Shampoo hipoalergênico", BigDecimal.ZERO);
+        // PRODUTOS
+        Product p1 = new Product(null, "Ração Premium 15kg", new BigDecimal("250.00"), "Ração de alta qualidade para cães adultos",
+                50, 20, Instant.parse("2026-01-10T08:30:00Z"), new BigDecimal("10.00"), new BigDecimal("120.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c1)), new HashSet<>(Arrays.asList(f1, f2)));
 
-        Product p3 = new Product(null, "Coleira de Couro", new BigDecimal("80.00"),
-                30, Instant.parse("2026-03-05T14:20:00Z"), "Coleira resistente tamanho G", new BigDecimal("5.00"));
+        Product p2 = new Product(null, "Shampoo Pet suave", new BigDecimal("45.00"), "Shampoo hipoalergênico",
+                100, 30, Instant.parse("2026-02-15T10:00:00Z"), BigDecimal.ZERO, new BigDecimal("20.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c3)), new HashSet<>(Arrays.asList(f2)));
 
-        Product p4 = new Product(null, "Aquário 20L Básico", new BigDecimal("150.00"),
-                15, Instant.parse("2026-03-20T09:45:00Z"), "Aquário de vidro simples com tampa", new BigDecimal("5.00"));
+        Product p3 = new Product(null, "Coleira de Couro", new BigDecimal("80.00"), "Coleira resistente tamanho G",
+                30, 10, Instant.parse("2026-03-05T14:20:00Z"), new BigDecimal("5.00"), new BigDecimal("35.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c2)), new HashSet<>(Arrays.asList(f1)));
 
-        Product p5 = new Product(null, "Aquário 100L Profissional", new BigDecimal("850.00"),
-                5, Instant.parse("2026-04-02T11:30:00Z"), "Vidro extra clear com acabamento em silicone preto", new BigDecimal("10.00"));
+        Product p4 = new Product(null, "Aquário 20L Básico", new BigDecimal("150.00"), "Aquário de vidro simples com tampa",
+                15, 5, Instant.parse("2026-03-20T09:45:00Z"), new BigDecimal("5.00"), new BigDecimal("70.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c5, c2)), new HashSet<>(Arrays.asList(f3)));
 
-        Product p6 = new Product(null, "Filtro Externo Hang-on 300L/H", new BigDecimal("120.00"),
-                25, Instant.parse("2026-04-10T16:00:00Z"), "Filtragem química, física e biológica", BigDecimal.ZERO);
+        Product p5 = new Product(null, "Aquário 100L Profissional", new BigDecimal("850.00"), "Vidro extra clear com acabamento em silicone preto",
+                5, 2, Instant.parse("2026-04-02T11:30:00Z"), new BigDecimal("10.00"), new BigDecimal("400.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c5)), new HashSet<>(Arrays.asList(f3, f4)));
 
-        Product p7 = new Product(null, "Termostato 50W", new BigDecimal("85.00"),
-                40, Instant.parse("2026-05-01T13:15:00Z"), "Aquecedor automático com regulagem", new BigDecimal("15.00"));
+        Product p6 = new Product(null, "Filtro Externo Hang-on 300L/H", new BigDecimal("120.00"), "Filtragem química, física e biológica",
+                25, 10, Instant.parse("2026-04-10T16:00:00Z"), BigDecimal.ZERO, new BigDecimal("60.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c5, c2)), new HashSet<>(Arrays.asList(f4)));
 
-        Product p8 = new Product(null, "Luminária LED RGB 40cm", new BigDecimal("210.00"),
-                12, Instant.parse("2026-05-12T10:30:00Z"), "Iluminação potente para plantas naturais", new BigDecimal("8.00"));
+        Product p7 = new Product(null, "Termostato 50W", new BigDecimal("85.00"), "Aquecedor automático com regulagem",
+                40, 15, Instant.parse("2026-05-01T13:15:00Z"), new BigDecimal("15.00"), new BigDecimal("40.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c5, c2)), new HashSet<>(Arrays.asList(f4)));
 
-        // Associando
+        Product p8 = new Product(null, "Luminária LED RGB 40cm", new BigDecimal("210.00"), "Iluminação potente para plantas naturais",
+                12, 5, Instant.parse("2026-05-12T10:30:00Z"), new BigDecimal("8.00"), new BigDecimal("100.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c5, c2)), new HashSet<>(Arrays.asList(f4)));
+
+        Product p9 = new Product(null, "Kit Sachê Gatos Premium 12un", new BigDecimal("35.00"), "Ração úmida sabor salmão",
+                80, 20, Instant.parse("2026-05-20T08:00:00Z"), new BigDecimal("5.00"), new BigDecimal("18.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c1)), new HashSet<>(Arrays.asList(f2)));
+
+        // Modificado: Agora pertence à categoria Brinquedos (c7) e Fornecedor FunPet (f8)
+        Product p10 = new Product(null, "Arranhador Torre 1.5m", new BigDecimal("280.00"), "Arranhador de pelúcia com 3 andares e rede",
+                10, 3, Instant.parse("2026-05-25T14:00:00Z"), new BigDecimal("15.00"), new BigDecimal("120.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c7, c2)), new HashSet<>(Arrays.asList(f8, f1)));
+
+        Product p11 = new Product(null, "Kit Teste de pH", new BigDecimal("45.00"), "Mede o pH da água doces e salgadas (100 testes)",
+                45, 15, Instant.parse("2026-06-01T09:30:00Z"), BigDecimal.ZERO, new BigDecimal("15.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c5, c4)), new HashSet<>(Arrays.asList(f4)));
+
+        Product p12 = new Product(null, "Areia Sanitária Biodegradável 4kg", new BigDecimal("30.00"), "Forma torrões firmes e elimina odores",
+                120, 40, Instant.parse("2026-06-05T11:15:00Z"), new BigDecimal("10.00"), new BigDecimal("12.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c3)), new HashSet<>(Arrays.asList(f1, f2)));
+
+        Product p13 = new Product(null, "Bomba Submersa 1000L/H", new BigDecimal("180.00"), "Bomba silenciosa, ideal para filtros e fontes",
+                20, 5, Instant.parse("2026-06-08T16:45:00Z"), new BigDecimal("12.00"), new BigDecimal("85.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c5, c2)), new HashSet<>(Arrays.asList(f3, f4)));
+
+        // Novos Produtos Explorando as Novas Categorias e Fornecedores
+        Product p14 = new Product(null, "Antipulgas e Carrapatos 10-20kg", new BigDecimal("95.00"), "Comprimido mastigável ação rápida",
+                60, 20, Instant.parse("2026-06-08T09:00:00Z"), BigDecimal.ZERO, new BigDecimal("45.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c6)), new HashSet<>(Arrays.asList(f5)));
+
+        Product p15 = new Product(null, "Bolinha Maciça Cães", new BigDecimal("25.00"), "Borracha super resistente para cães destruidores",
+                150, 50, Instant.parse("2026-06-08T10:15:00Z"), new BigDecimal("5.00"), new BigDecimal("8.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c7)), new HashSet<>(Arrays.asList(f8)));
+
+        Product p16 = new Product(null, "Gaiola Calopsita Luxo", new BigDecimal("320.00"), "Acompanha poleiros, comedouros e balanço",
+                8, 3, Instant.parse("2026-06-09T08:30:00Z"), new BigDecimal("10.00"), new BigDecimal("150.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c9, c2)), new HashSet<>(Arrays.asList(f6)));
+
+        Product p17 = new Product(null, "Moletom Pet Inverno Tam. M", new BigDecimal("65.00"), "Roupinha de algodão macio para dias frios",
+                40, 15, Instant.parse("2026-06-09T11:45:00Z"), BigDecimal.ZERO, new BigDecimal("25.00"), BigDecimal.ZERO,
+                new HashSet<>(Arrays.asList(c8)), new HashSet<>(Arrays.asList(f7)));
+
+        // Salvando TODOS os 17 produtos no banco de dados
+        productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17));
+
+        // Associações
         p1.addCategoria(c1);
         p1.addFornecedor(f1);
 
@@ -102,15 +164,19 @@ public class TestConfig implements CommandLineRunner {
 
         productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8));
 
-        // Vendas
+        // VENDAS
+        // -------------------------------------------------------------------------
         // Venda 1: Pagamento integral via PIX (Sem descontos)
+        // -------------------------------------------------------------------------
         Sale v1 = new Sale(null, Instant.parse("2026-01-05T09:15:00Z"), PaymentStatus.PAGA, PaymentMethod.PIX,
                 new BigDecimal("225.00"), Arrays.asList("Entrega realizada na portaria"), SaleType.DELIVERY);
         v1.addItem(p1, 1, 0);
         saleRepository.save(v1);
         orderItemRepository.saveAll(v1.getItens());
 
+        // -------------------------------------------------------------------------
         // Venda 2: Pagou apenas uma parte. Aquário (p5) com 10% de desconto!
+        // -------------------------------------------------------------------------
         Sale v2 = new Sale(null, Instant.parse("2026-01-10T14:30:00Z"), PaymentStatus.PAGAMENTO_PARCIAL, PaymentMethod.CARTAO_CREDITO,
                 new BigDecimal("500.00"), Arrays.asList("Cliente solicitará instalação posterior"), SaleType.RESERVATION);
         v2.addItem(p5, 1, 10); // <-- 10% de desconto APENAS neste item
@@ -119,7 +185,9 @@ public class TestConfig implements CommandLineRunner {
         saleRepository.save(v2);
         orderItemRepository.saveAll(v2.getItens());
 
+        // -------------------------------------------------------------------------
         // Venda 3: Venda pendente
+        // -------------------------------------------------------------------------
         Sale v3 = new Sale(null, Instant.parse("2026-02-15T11:00:00Z"), PaymentStatus.PENDENTE, PaymentMethod.DINHEIRO,
                 BigDecimal.ZERO, Arrays.asList("Aguardando retirada em loja"), SaleType.RESERVATION);
         v3.addItem(p4, 1, 0);
@@ -127,7 +195,9 @@ public class TestConfig implements CommandLineRunner {
         saleRepository.save(v3);
         orderItemRepository.saveAll(v3.getItens());
 
+        // -------------------------------------------------------------------------
         // Venda 4: Múltiplos itens
+        // -------------------------------------------------------------------------
         Sale v4 = new Sale(null, Instant.parse("2026-03-02T17:45:00Z"), PaymentStatus.PAGA, PaymentMethod.CARTAO_DEBITO,
                 new BigDecimal("121.00"), Arrays.asList("Cliente utilizou sacola própria"), SaleType.COUNTER_SALE);
         v4.addItem(p3, 1, 0);

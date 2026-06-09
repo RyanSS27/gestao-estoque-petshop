@@ -25,8 +25,8 @@ public class ProductResumeDTO {
 
     public ProductResumeDTO(Product product) {
         this.id = product.getId();
-        this.name = product.getNome();
-        this.price = product.getPreco();
-        this.quantity = product.getQuantidade();
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.quantity = product.getQuantity();
     }
 }

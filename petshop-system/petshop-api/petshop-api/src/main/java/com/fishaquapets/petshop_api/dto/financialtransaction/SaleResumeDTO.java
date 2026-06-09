@@ -10,6 +10,7 @@ import java.time.Instant;
 
 @Getter
 public class SaleResumeDTO {
+    private Long id;
     private Instant dateTime;
     private PaymentMethod paymentMethod;
     private PaymentStatus paymentStatus;
@@ -21,12 +22,14 @@ public class SaleResumeDTO {
     public SaleResumeDTO() {}
 
     public SaleResumeDTO(
+            Long id,
             Instant dateTime,
             PaymentStatus paymentStatus,
             BigDecimal totalValue,
             Integer quantityOfItens,
             String firstItemName) {
 
+        this.id = id;
         this.dateTime = dateTime;
         this.paymentStatus = paymentStatus;
         this.totalValue = totalValue;
@@ -35,6 +38,7 @@ public class SaleResumeDTO {
     }
 
     public SaleResumeDTO(Sale sale) {
+        this.id = sale.getId();
         this.dateTime = sale.getRegistrationDateTime();
         this.paymentStatus = sale.getPaymentStatus();
         this.totalValue = sale.getTotalValue();

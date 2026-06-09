@@ -37,7 +37,7 @@ public class OrderItem {
     public OrderItem(Sale sale, Product product, Integer quantidade, Integer discountPercentage) {
         this.id = new OrderItemPK(sale, product);
         this.quantidade = quantidade;
-        this.valorUnitario = product.getPrecoDeVenda();
+        this.valorUnitario = product.getSalePrice();
         this.discountPercentage = discountPercentage;
     }
 
@@ -81,17 +81,17 @@ public class OrderItem {
         return this.id.getProductId();
     }
 
-    public String getProductName() { return id.getProduct().getNome(); }
+    public String getProductName() { return id.getProduct().getName(); }
 
     /*
         Por enquanto, não utilizados (passíveis de remoção):
 
-        public void adicionar(int quantidade) {
-            this.quantidade += quantidade;
+        public void adicionar(int quantity) {
+            this.quantity += quantity;
         }
 
-        public void retirara(int quantidade) {
-            this.quantidade += quantidade;
+        public void retirara(int quantity) {
+            this.quantity += quantity;
         }
     */
 

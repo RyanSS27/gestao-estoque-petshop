@@ -29,21 +29,27 @@ public class Product implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    private String nome;
-    private BigDecimal preco;
+    private String name;
+    private BigDecimal price;
 
     @Column
-    private String descricao;
-    private int quantidade;
+    private String description;
+    private int quantity;
+
+    @Column(name = "quantidade_minima_ideal")
+    private int minIdealQuantity;
 
     @Column(name = "data_atualizacao", nullable = false)
     private Instant updateDate;
 
     @Column(name = "porcentagem_desconto")
-    private BigDecimal porcentagemDesconto; // 0-100
+    private BigDecimal discountPercentage; // 0-100
+
+    @Column(name = "preco_de_custo", nullable = false)
+    private BigDecimal costPrice;
 
     @Column(name = "preco_de_venda", nullable = false)
-    private BigDecimal precoDeVenda;
+    private BigDecimal salePrice;
 
     @Setter(AccessLevel.NONE)
     @ManyToMany
@@ -67,26 +73,21 @@ public class Product implements Serializable {
 
     public Product() {}
 
-    public Product(
-            Long id,
-            String nome,
-            BigDecimal preco,
-            int quantidade,
-            Instant updateDate,
-            String descricao,
-            BigDecimal porcentagemDesconto
-    ) {
+    public Product(Long id, String name, BigDecimal price, String description, int quantity, int minIdealQuantity, Instant updateDate, BigDecimal discountPercentage, BigDecimal costPrice, BigDecimal salePrice, Set<Category> categories, Set<Supplier> suppliers) {
         this.id = id;
-        this.nome = nome;
-        this.preco = preco;
-        this.quantidade = quantidade;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.quantity = quantity;
+        this.minIdealQuantity = minIdealQuantity;
         this.updateDate = updateDate;
-        this.descricao = descricao;
-        this.porcentagemDesconto = porcentagemDesconto;
-
+        this.discountPercentage = discountPercentage;
+        this.costPrice = costPrice;
+        this.salePrice = salePrice;
+        this.categories = categories;
+        this.suppliers = suppliers;
         this.calcularPrecoDeVenda();
     }
-
 
     public void addCategoria(Category category) {
         categories.add(category);
@@ -105,16 +106,16 @@ public class Product implements Serializable {
     }
 
     public void calcularPrecoDeVenda() {
-        if (this.preco != null && this.porcentagemDesconto != null) {
-            BigDecimal fatorDesconto = this.porcentagemDesconto
+        if (this.price != null && this.discountPercentage != null) {
+            BigDecimal fatorDesconto = this.discountPercentage
                     .divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP);
 
-            BigDecimal valorDesconto = this.preco.multiply(fatorDesconto);
+            BigDecimal valorDesconto = this.price.multiply(fatorDesconto);
 
-            this.precoDeVenda = this.preco.subtract(valorDesconto)
+            this.salePrice = this.price.subtract(valorDesconto)
                     .setScale(2, RoundingMode.HALF_UP);
         } else {
-            this.precoDeVenda = this.preco; // Sem desconto, o preço de venda é o preço original
+            this.salePrice = this.price; // Sem desconto, o preço de venda é o preço original
         }
     }
 
@@ -124,15 +125,15 @@ public class Product implements Serializable {
     }
 
     public void adicionarEstoque(int quantidade) {
-        if(quantidade <= 0) throw new IllegalArgumentException("A quantidade deve ser positiva");
+        if(quantidade <= 0) throw new IllegalArgumentException("A quantity deve ser positiva");
 
-        this.quantidade += quantidade;
+        this.quantity += quantidade;
     }
 
     public boolean reduzirEstoque(int quantidade) {
         if (quantidade <= 0) return false;
-        if (this.quantidade >= quantidade) {
-            this.quantidade -= quantidade;
+        if (this.quantity >= quantidade) {
+            this.quantity -= quantidade;
             return true;
         }
         return false;
