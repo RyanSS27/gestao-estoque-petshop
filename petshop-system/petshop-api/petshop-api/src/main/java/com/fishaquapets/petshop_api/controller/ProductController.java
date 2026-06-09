@@ -31,7 +31,7 @@ public class ProductController {
     }
 
     // BUSCA POR QUANTIDADE
-    // Buscar os adicionados/alterados recentemente por quantidade
+    // Buscar os adicionados/alterados recentemente por quantity
     @GetMapping(value = "/quantity/{quantity}")
     public ResponseEntity<List<ProductResumeDTO>> findByQuantity(@PathVariable int quantity) {
         return ResponseEntity.ok().body(productService.findByQuantity(quantity));
@@ -53,7 +53,6 @@ public class ProductController {
     // >> FUNÇÕES AINDA SEM LÓGICA POR TRÁS <<
 
 
-    // BUSCA POR FORNECEDOR
     // Buscar por fornecedor
     @GetMapping(value = "/supplier/{supplier}")
     public ResponseEntity<List<ProductResumeDTO>> findBySupplier(@PathVariable String supplier) {
@@ -69,6 +68,4 @@ public class ProductController {
     public ResponseEntity<List<ProductResumeDTO>> findByKeyWords(@PathVariable String keyWords) {
         return ResponseEntity.ok().body(productService.findByKeyWords(keyWords));
     }
-
-    // MAPEAMENTO DAS ROTAS DE SET
 }

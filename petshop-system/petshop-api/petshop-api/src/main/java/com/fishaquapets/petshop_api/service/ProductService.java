@@ -23,7 +23,7 @@ public class ProductService {
 
     
     public List<ProductResumeDTO> findByQuantity(int quantity) {
-        // Coloquei um freio na quantidade de requisições por vez
+        // Coloquei um freio na quantity de requisições por vez
         if (quantity > limitPerRequest) quantity = limitPerRequest;
 
 
