@@ -51,9 +51,9 @@ public class TestConfig implements CommandLineRunner {
         categoryRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9));
 
         // FORNECEDORES
-        Supplier f1 = new Supplier(null, "PetDistribuidora S.A.", "contato@petdist.com");
+        Supplier f1 = new Supplier(null, "PetDistribuidora S.A.", "contact@petdist.com");
         Supplier f2 = new Supplier(null, "MegaPet Atacado", "vendas@megapet.com");
-        Supplier f3 = new Supplier(null, "Aquários Brasil Ltda.", "contato@aquabrasil.com");
+        Supplier f3 = new Supplier(null, "Aquários Brasil Ltda.", "contact@aquabrasil.com");
         Supplier f4 = new Supplier(null, "OceanTech", "suporte@oceantech.com");
         Supplier f5 = new Supplier(null, "PharmaPet Vet", "vendas@pharmapet.com");
         Supplier f6 = new Supplier(null, "PiuPiu Distribuidora", "aves@piupiu.com");
