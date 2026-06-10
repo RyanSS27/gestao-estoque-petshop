@@ -65,9 +65,9 @@ public class Product implements Serializable {
     @ManyToMany
     @JoinTable(
             // Tabela de associação entre produtos e fornecedores
-            name = "produto_fornecedor", // nome da nova tabela
-            joinColumns = @JoinColumn(name = "id_produto"), // nome da coluna
-            inverseJoinColumns = @JoinColumn(name = "id_fornecedor") // nome da coluna
+            name = "produto_fornecedor", // name da nova tabela
+            joinColumns = @JoinColumn(name = "id_produto"), // name da coluna
+            inverseJoinColumns = @JoinColumn(name = "id_fornecedor") // name da coluna
     )
     private Set<Supplier> suppliers = new HashSet<>();
 
