@@ -6,7 +6,6 @@ import com.fishaquapets.petshop_api.model.entity.Product;
 import com.fishaquapets.petshop_api.repository.ProductRepository;
 import com.fishaquapets.petshop_api.repository.specifications.ProductSpecifications;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,32 +23,30 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    // BUSCA INTELIGENTE COM ORDENAÇÃO E LIMITE MANTIDOS
+    public ProductDTO findById(Long id) {
+        Product p = productRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Produto com ID " + id + " não encontrado"));
+        return new ProductDTO(p);
+    }
+
     public List<ProductResumeDTO> search(String name, Long categoryId, Long supplierId, Integer limit) {
 
-        // 1. Encadeamos as especificações padronizadas
+        // Empilhando as regras dinâmicas de busca
         // O método where() inicia a corrente e os and() vão adicionando os blocos
         Specification<Product> spec = Specification.where(ProductSpecifications.hasName(name))
                 .and(ProductSpecifications.hasCategory(categoryId))
                 .and(ProductSpecifications.hasSupplier(supplierId));
 
-        // 2. Mantemos sua regra do limite de requisições por vez
-        int queryLimit = (limit != null && limit > 0 && limit <= LIMIT_PER_REQUEST) ? limit : LIMIT_PER_REQUEST;
+        // Limite de paginação
+        int querySafeLimit = Math.min(limit, LIMIT_PER_REQUEST);
 
-        // 3. Criamos a regra de paginação que EMBUTE a ordenação decrescente por data
-        Pageable pageable = PageRequest.of(0, queryLimit, Sort.by(Sort.Direction.DESC, "updateDate"));
+        // Criamos a regra de paginação que EMBUTE a ordenação decrescente por data
+        Pageable pageable = PageRequest.of(0, querySafeLimit, Sort.by(Sort.Direction.DESC, "updateDate"));
 
-        // 4. O Repository executa os filtros E a ordenação/limite em uma única ida ao banco
+        // Executando a busca com os filtros e a ordenação/limite
         return productRepository.findAll(spec, pageable)
                 .stream()
                 .map(ProductResumeDTO::new)
                 .toList();
-    }
-
-    public ProductDTO findById(Long id) {
-        // Ajustado para lançar a exceção que é capturada pelo seu ResourceExceptionHandler
-        Product p = productRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Produto com ID " + id + " não encontrado"));
-        return new ProductDTO(p);
     }
 }

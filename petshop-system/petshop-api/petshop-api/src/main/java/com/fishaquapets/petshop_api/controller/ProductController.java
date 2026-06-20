@@ -26,9 +26,9 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductResumeDTO>> searchProducts(
             @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "categoryId", required = false) Long categoryId,
-            @RequestParam(value = "supplierId", required = false) Long supplierId,
-            @RequestParam(value = "limit", required = false) Integer limit
+            @RequestParam(value = "category-id", required = false) Long categoryId,
+            @RequestParam(value = "supplier-id", required = false) Long supplierId,
+            @RequestParam(value = "limit", defaultValue = "25") Integer limit
     ) {
         List<ProductResumeDTO> list = productService.search(name, categoryId, supplierId, limit);
         return ResponseEntity.ok().body(list);
