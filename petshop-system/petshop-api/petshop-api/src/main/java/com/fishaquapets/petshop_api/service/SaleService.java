@@ -40,6 +40,7 @@ public class SaleService {
             int limit) {
 
         // Empilhando as regras dinâmicas
+        // O método where() inicia a corrente e os and() vão adicionando os blocos
         Specification<Sale> spec = Specification.where(SaleSpecifications.hasPaymentStatus(status))
                 .and(SaleSpecifications.hasPaymentMethod(method))
                 .and(SaleSpecifications.registeredBetween(startDate, endDate));
