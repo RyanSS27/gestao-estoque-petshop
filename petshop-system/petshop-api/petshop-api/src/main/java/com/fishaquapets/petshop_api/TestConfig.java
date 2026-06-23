@@ -1,9 +1,6 @@
 package com.fishaquapets.petshop_api;
 
-import com.fishaquapets.petshop_api.model.entity.Category;
-import com.fishaquapets.petshop_api.model.entity.Supplier;
-import com.fishaquapets.petshop_api.model.entity.Product;
-import com.fishaquapets.petshop_api.model.entity.Sale;
+import com.fishaquapets.petshop_api.model.entity.*;
 import com.fishaquapets.petshop_api.model.enums.CategoryType;
 import com.fishaquapets.petshop_api.model.enums.PaymentStatus;
 import com.fishaquapets.petshop_api.model.enums.PaymentMethod;
@@ -18,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 @Configuration
 @Profile("test")
@@ -32,6 +30,8 @@ public class TestConfig implements CommandLineRunner {
     private SaleRepository saleRepository;
     @Autowired
     private OrderItemRepository orderItemRepository;
+    @Autowired
+    private ServiceProvidedRepository serviceProvidedRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -310,6 +310,141 @@ public class TestConfig implements CommandLineRunner {
         v14.addItem(p7, 2, 0);
         saleRepository.save(v14);
         orderItemRepository.saveAll(v14.getItens());
+
+        // -------------------------------------------------------------------------
+        // CATEGORIAS DE SERVIÇO
+        // -------------------------------------------------------------------------
+        Category catLimpeza = new Category(null, "Limpeza Geral", CategoryType.SERVICE);
+        Category catManutencao = new Category(null, "Manutenção Preventiva", CategoryType.SERVICE);
+        Category catRestauracao = new Category(null, "Restauração / Paisagismo", CategoryType.SERVICE);
+        Category catInstalacao = new Category(null, "Instalação / Montagem", CategoryType.SERVICE);
+
+        categoryRepository.saveAll(Arrays.asList(catLimpeza, catManutencao, catRestauracao, catInstalacao));
+
+        // -------------------------------------------------------------------------
+        // SEEDING DOS SERVIÇOS PRESTADOS
+        // -------------------------------------------------------------------------
+
+        // Serviço 1: Limpeza Padrão
+        Set<Category> categoriasS1 = new HashSet<>();
+        categoriasS1.add(catLimpeza); // Associando a categoria correta
+
+        ServiceProvided s1 = new ServiceProvided(
+                Instant.parse("2026-06-20T10:30:00Z"),
+                PaymentStatus.PAGA,
+                PaymentMethod.PIX,
+                new BigDecimal("180.00"),
+                Arrays.asList("Limpeza profunda realizada com sucesso"),
+                "Serviço de Limpeza Geral Residencial",
+                categoriasS1,
+                new BigDecimal("25.00"),
+                Instant.parse("2026-06-20T08:00:00Z")
+        );
+
+
+        // Serviço 2: Um caso interessante de um serviço que pertence a DUAS categorias
+        Set<Category> categoriasS2 = new HashSet<>();
+        categoriasS2.add(catInstalacao);
+        categoriasS2.add(catManutencao);
+
+        ServiceProvided s2 = new ServiceProvided(
+                Instant.now(),
+                PaymentStatus.PENDENTE,
+                PaymentMethod.CARTAO_DEBITO,
+                new BigDecimal("550.00"),
+                Arrays.asList("Instalação de bomba d'água e revisão dos filtros antigos"),
+                "Instalação e Manutenção Preventiva de Sistema Hidráulico",
+                categoriasS2,
+                new BigDecimal("95.00"),
+                Instant.parse("2026-06-23T14:00:00Z")
+        );
+
+        // Serviço 3
+        Set<Category> categoriasS3 = new HashSet<>(Arrays.asList(catInstalacao));
+        ServiceProvided s3 = new ServiceProvided(
+                Instant.parse("2026-06-21T09:00:00Z"),
+                PaymentStatus.PAGA,
+                PaymentMethod.CARTAO_CREDITO,
+                new BigDecimal("850.00"),
+                Arrays.asList("Montagem completa do aquário marinho"),
+                "Instalação de Aquário Marinho 300L",
+                categoriasS3,
+                new BigDecimal("200.00"),
+                Instant.parse("2026-06-21T10:00:00Z")
+        );
+
+        // Serviço 4
+        Set<Category> categoriasS4 = new HashSet<>(Arrays.asList(catRestauracao));
+        ServiceProvided s4 = new ServiceProvided(
+                Instant.parse("2026-06-22T11:15:00Z"),
+                PaymentStatus.PENDENTE,
+                PaymentMethod.PIX,
+                new BigDecimal("420.00"),
+                Arrays.asList("Cliente pediu pedras vulcânicas e troncos"),
+                "Paisagismo de Terrário para Répteis",
+                categoriasS4,
+                new BigDecimal("150.00"),
+                Instant.parse("2026-06-25T14:00:00Z")
+        );
+
+        // Serviço 5
+        Set<Category> categoriasS5 = new HashSet<>(Arrays.asList(catManutencao));
+        ServiceProvided s5 = new ServiceProvided(
+                Instant.parse("2026-06-23T08:30:00Z"),
+                PaymentStatus.PAGA,
+                PaymentMethod.DINHEIRO,
+                new BigDecimal("120.00"),
+                Arrays.asList("Troca de perlon e carvão ativado"),
+                "Manutenção de Filtro Canister",
+                categoriasS5,
+                new BigDecimal("35.00"),
+                Instant.parse("2026-06-23T09:00:00Z")
+        );
+
+        // Serviço 6
+        Set<Category> categoriasS6 = new HashSet<>(Arrays.asList(catLimpeza, catManutencao));
+        ServiceProvided s6 = new ServiceProvided(
+                Instant.parse("2026-06-24T13:00:00Z"),
+                PaymentStatus.PAGA,
+                PaymentMethod.PIX,
+                new BigDecimal("600.00"),
+                Arrays.asList("Lago necessitava de aspiração de fundo profunda"),
+                "Limpeza e Manutenção de Lago Ornamental",
+                categoriasS6,
+                new BigDecimal("80.00"),
+                Instant.parse("2026-06-24T14:00:00Z")
+        );
+
+        // Serviço 7
+        Set<Category> categoriasS7 = new HashSet<>(Arrays.asList(catRestauracao, catInstalacao));
+        ServiceProvided s7 = new ServiceProvided(
+                Instant.parse("2026-06-25T10:00:00Z"),
+                PaymentStatus.PENDENTE,
+                PaymentMethod.CARTAO_CREDITO,
+                new BigDecimal("950.00"),
+                Arrays.asList("Remontagem de layout hardscape (pedras e raízes)"),
+                "Reforma e Montagem de Aquário Plantado",
+                categoriasS7,
+                new BigDecimal("300.00"),
+                Instant.parse("2026-06-28T09:00:00Z")
+        );
+
+        // Serviço 8
+        Set<Category> categoriasS8 = new HashSet<>(Arrays.asList(catLimpeza));
+        ServiceProvided s8 = new ServiceProvided(
+                Instant.parse("2026-06-26T16:45:00Z"),
+                PaymentStatus.PAGA,
+                PaymentMethod.CARTAO_DEBITO,
+                new BigDecimal("150.00"),
+                Arrays.asList("Limpeza mensal padrão"),
+                "Limpeza de Bateria de Aquários",
+                categoriasS8,
+                new BigDecimal("20.00"),
+                Instant.parse("2026-06-26T17:00:00Z")
+        );
+
+        // Persistência em lote
+        serviceProvidedRepository.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6, s7, s8));
 
         System.out.println("Seeding realizado com sucesso!");
     }
