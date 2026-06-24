@@ -27,7 +27,7 @@ public class SaleResumeDTO {
             PaymentStatus paymentStatus,
             BigDecimal totalValue,
             Integer quantityOfItens,
-            String firstItemName) {
+            String firstItemName, PaymentMethod paymentMethod) {
 
         this.id = id;
         this.dateTime = dateTime;
@@ -35,6 +35,7 @@ public class SaleResumeDTO {
         this.totalValue = totalValue;
         this.quantityOfItens = quantityOfItens;
         this.firstItemName = firstItemName;
+        this.paymentMethod = paymentMethod;
     }
 
     public SaleResumeDTO(Sale sale) {
@@ -44,5 +45,6 @@ public class SaleResumeDTO {
         this.totalValue = sale.getTotalValue();
         this.firstItemName = sale.getFistItemName();
         this.quantityOfItens = sale.getItens().size();
+        this.paymentMethod = sale.getPaymentMethod();
     }
 }

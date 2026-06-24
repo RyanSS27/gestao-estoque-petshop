@@ -29,11 +29,11 @@ public class SaleController {
 
     @GetMapping
     public ResponseEntity<List<SaleResumeDTO>> searchDynamic(
-            @RequestParam(required = false) PaymentStatus status,
-            @RequestParam(required = false) PaymentMethod method,
-            @RequestParam(required = false) Instant startDate,
-            @RequestParam(required = false) Instant endDate,
-            @RequestParam(defaultValue = "25") int limit) {
+            @RequestParam(value = "payment-status", required = false) PaymentStatus status,
+            @RequestParam(value = "payment-method", required = false) PaymentMethod method,
+            @RequestParam(value = "start-date", required = false) Instant startDate,
+            @RequestParam(value = "end-end", required = false) Instant endDate,
+            @RequestParam(value = "limit", defaultValue = "25") int limit) {
 
         // O Controller captura e manda tudo para o service
         List<SaleResumeDTO> result = saleService.searchDynamic(status, method, startDate, endDate, limit);

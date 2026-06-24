@@ -4,9 +4,12 @@ import com.fishaquapets.petshop_api.dto.product.ProductDTO;
 import com.fishaquapets.petshop_api.dto.product.ProductResumeDTO;
 import com.fishaquapets.petshop_api.model.entity.Product;
 import com.fishaquapets.petshop_api.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fishaquapets.petshop_api.repository.specifications.ProductSpecifications;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,55 +17,36 @@ import java.util.*;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
+    private static final int LIMIT_PER_REQUEST = 25;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    private static final int limitPerRequest = 25;
-
-    
-    public List<ProductResumeDTO> findByQuantity(int quantity) {
-        // Coloquei um freio na quantity de requisições por vez
-        if (quantity > limitPerRequest) quantity = limitPerRequest;
-
-
-        // Criamos um pedido para a primeira página (0) com o tamanho desejado
-        Pageable topN = PageRequest.of(0, quantity);
-
-        return productRepository.findAllByOrderByUpdateDateDesc(topN)
-                .stream()
-                .map(ProductResumeDTO::new) // Assume que o DTO tem um construtor que recebe a Entity e converte
-                .toList();
-    }
-
     public ProductDTO findById(Long id) {
         Product p = productRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Usuário não encontrado"));;
+                () -> new EntityNotFoundException("Produto com ID " + id + " não encontrado"));
         return new ProductDTO(p);
     }
 
-    // Implementar a lógica das requisições:
-    public List<ProductResumeDTO> findByCategory(String category) {
-        // Falta a lógica
-        return null;
-    }
+    public List<ProductResumeDTO> search(String name, Long categoryId, Long supplierId, Integer limit) {
 
-    public List<ProductResumeDTO> findByCategory(Long category) {
-        // Falta a lógica
-        return null;
-    }
+        // Empilhando as regras dinâmicas de busca
+        // O método where() inicia a corrente e os and() vão adicionando os blocos
+        Specification<Product> spec = Specification.where(ProductSpecifications.hasName(name))
+                .and(ProductSpecifications.hasCategory(categoryId))
+                .and(ProductSpecifications.hasSupplier(supplierId));
 
-    public List<ProductResumeDTO> findBySupplier(String supplier) {
-        return null;
-    }
+        // Limite de paginação
+        int querySafeLimit = Math.min(limit, LIMIT_PER_REQUEST);
 
-    public List<ProductResumeDTO> findBySupplier(Long supplier) {
-        return null;
-    }
+        // Criamos a regra de paginação que EMBUTE a ordenação decrescente por data
+        Pageable pageable = PageRequest.of(0, querySafeLimit, Sort.by(Sort.Direction.DESC, "updateDate"));
 
-    public List<ProductResumeDTO> findByKeyWords(String keyWords) {
-        // Falta a lógica
-        return null;
+        // Executando a busca com os filtros e a ordenação/limite
+        return productRepository.findAll(spec, pageable)
+                .stream()
+                .map(ProductResumeDTO::new)
+                .toList();
     }
 }

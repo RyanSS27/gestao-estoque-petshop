@@ -19,10 +19,7 @@ import java.util.List;
 
 @Service
 public class SaleService {
-
     private final SaleRepository saleRepository;
-
-    // Boa prática: Constante em UPPER_SNAKE_CASE
     private static final int LIMIT_PER_REQUEST = 25;
 
     public SaleService(SaleRepository saleRepository) {
@@ -43,17 +40,18 @@ public class SaleService {
             int limit) {
 
         // Empilhando as regras dinâmicas
+        // O método where() inicia a corrente e os and() vão adicionando os blocos
         Specification<Sale> spec = Specification.where(SaleSpecifications.hasPaymentStatus(status))
                 .and(SaleSpecifications.hasPaymentMethod(method))
                 .and(SaleSpecifications.registeredBetween(startDate, endDate));
 
         // Protegendo o limite de paginação
-        int safeLimit = Math.min(limit, LIMIT_PER_REQUEST);
+        int querySafeLimit = Math.min(limit, LIMIT_PER_REQUEST);
 
-        // Configurando a paginação (Atenção ao import correto do Spring Data Domain)
-        Pageable pageable = PageRequest.of(0, safeLimit, Sort.by(Sort.Direction.DESC, "registrationDateTime"));
+        // Configurando a paginação de forma decrescente com base na data (pegando as que foram alteradas por último)
+        Pageable pageable = PageRequest.of(0, querySafeLimit, Sort.by(Sort.Direction.DESC, "registrationDateTime"));
 
-        // Executando a busca otimizada (O JpaSpecificationExecutor faz isso funcionar)
+        // Executando a busca com os filtros e a ordenação/limite
         return saleRepository.findAll(spec, pageable).getContent()
                 .stream()
                 .map(SaleResumeDTO::new)

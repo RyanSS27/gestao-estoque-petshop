@@ -7,20 +7,20 @@ import lombok.Getter;
 public class SupplierDTO {
     private Long id;
     private String name;
-    private String contato; // estamos na dúvida se será só telefone ou email também
+    private String contact; // estamos na dúvida se será só telefone ou email também
 
 
     public SupplierDTO() {}
 
-    public SupplierDTO(Long id, String name, String contato) {
+    public SupplierDTO(Long id, String name, String contact) {
         this.id = id;
         this.name = name;
-        this.contato = contato;
+        this.contact = contact;
     }
 
     public SupplierDTO(Supplier supplier) {
         this.id = supplier.getId();
-        this.name = supplier.getNome();
-        this.contato = supplier.getContato();
+        this.name = supplier.getName();
+        this.contact = supplier.getContact();
     }
 }

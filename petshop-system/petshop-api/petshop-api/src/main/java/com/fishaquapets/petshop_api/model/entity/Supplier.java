@@ -27,10 +27,10 @@ public class Supplier implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
     @Column
-    private String contato;
+    private String contact;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "suppliers")
@@ -38,10 +38,10 @@ public class Supplier implements Serializable {
 
     public Supplier() {}
 
-    public Supplier(Long id, String nome, String contato) {
+    public Supplier(Long id, String name, String contact) {
         this.id = id;
-        this.nome = nome;
-        this.contato = contato;
+        this.name = name;
+        this.contact = contact;
     }
 
     @Override

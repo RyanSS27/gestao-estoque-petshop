@@ -52,11 +52,8 @@ public abstract class FinancialTransaction implements Serializable {
     @Column(name = "desconto_porcentagem", nullable = true)
     private Integer discountPercentage;
 
-    // Adicionei agora, complete a classe:
     @Column(name = "sub_total", nullable = true)
     private BigDecimal subTotal = BigDecimal.ZERO; // sem os descontos
-
-    // preciso adicionar o subtotal da venda sem descontos
 
     @Column
     private BigDecimal payment;
