@@ -41,7 +41,7 @@ public class ServiceProvidedService {
     ) {
         Specification<ServiceProvided> specifications = Specification.where(ServiceProvidedSpecifications.hasName(name))
                 .and(ServiceProvidedSpecifications.registeredBetween(startDate, endDate))
-                .and(ServiceProvidedSpecifications.hasCategoryId(categoryId))
+                .and(ServiceProvidedSpecifications.hasCategory(categoryId))
                 .and(ServiceProvidedSpecifications.hasPaymentMethod(method))
                 .and(ServiceProvidedSpecifications.hasStatus(status));
 

@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
+    // Apenas métodos adicionais que não dependam de Specification ficam aqui (ex: o seu de updateDate)
+    Page<Product> findAllByOrderByUpdateDateDesc(Pageable pageable);
 }
